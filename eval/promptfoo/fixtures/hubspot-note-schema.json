@@ -1,0 +1,14 @@
+{
+  "schema": {
+    "type": "object",
+    "required": ["dealId", "noteBody", "nextStep", "dealStage", "ownerEmail"],
+    "additionalProperties": false,
+    "properties": {
+      "dealId": {"type": "string"},
+      "noteBody": {"type": "string"},
+      "nextStep": {"type": "string"},
+      "dealStage": {"type": "string"},
+      "ownerEmail": {"type": "string"}
+    }
+  }
+}

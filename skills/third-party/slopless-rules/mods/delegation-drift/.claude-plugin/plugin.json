@@ -1,0 +1,9 @@
+{
+  "name": "delegation-drift",
+  "version": "0.1.0",
+  "description": "Counts main-thread work since the last subagent dispatch, nudges the model to delegate at every tenth call, and refuses foreground poll loops.",
+  "author": {
+    "name": "BioInfo",
+    "url": "https://github.com/BioInfo"
+  }
+}

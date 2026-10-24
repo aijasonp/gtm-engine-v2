@@ -1,0 +1,1 @@
+Write a Linear ticket body (JSON) for the Globex Industries deal. Include: title, description, priority, assignee, and a list of related tasks. Output ONLY valid JSON with keys: title, description, priority, assignee, relatedTasks (array of strings). No markdown fences, no prose outside the JSON.

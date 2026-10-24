@@ -1,0 +1,24 @@
+CALL TRANSCRIPT (2026-09-21, 45 min, Zoom)
+Attendees: {{AE_1}} Alvarez (CTO, Globex Industries), Priya Desai ({{COMPANY}} AE)
+
+{{AE_1}}: We're a manufacturing company, 12,000 employees. We're rolling out AI agents for our supply chain and we have no governance over them. Our legal team is nervous.
+
+Priya: What's driving the urgency?
+
+{{AE_1}}: A regulator asked us about our AI model inventory last month and we couldn't answer. That was embarrassing. We need a full inventory and audit trail before our next audit in January.
+
+Priya: What would success look like?
+
+{{AE_1}}: We want every model logged, every inference traceable, and role-based access controls. If we can show the auditor a complete trail, that's the win.
+
+Priya: Who signs off?
+
+{{AE_1}}: Our CFO, Linda Park, controls the budget. She's approved $1.5M for AI governance. I have the technical authority to pick the vendor, but she writes the check.
+
+Priya: Any other vendors in play?
+
+{{AE_1}}: We looked at a big consulting firm's framework, but it's just a PDF, not software. We need something that actually runs in our environment.
+
+Priya: Timeline?
+
+{{AE_1}}: We need the POC done by mid-November so we can present to the board in December. Decision by end of November.

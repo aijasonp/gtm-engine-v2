@@ -1,0 +1,32 @@
+{
+  "name": "slopless",
+  "owner": {
+    "name": "BioInfo",
+    "url": "https://github.com/BioInfo"
+  },
+  "metadata": {
+    "description": "Guard mods from slopless. Each one ships with its own tests."
+  },
+  "plugins": [
+    {
+      "name": "secrets-guard",
+      "source": "./mods/secrets-guard",
+      "description": "Denies writes to secret files and writes whose content carries a credential, with the reason shown."
+    },
+    {
+      "name": "read-first",
+      "source": "./mods/read-first",
+      "description": "Clears the engine's 'File has not been read yet' error: Edit reads the file and retries; Write hands the model the file's head with the error."
+    },
+    {
+      "name": "rollback-notice",
+      "source": "./mods/rollback-notice",
+      "description": "When a gate denies a Bash call, tells the model the whole call was rolled back and must be re-run in full; refuses git commit -F from shared /tmp."
+    },
+    {
+      "name": "delegation-drift",
+      "source": "./mods/delegation-drift",
+      "description": "Counts main-thread work since the last subagent dispatch, nudges the model to delegate at every tenth call, and refuses foreground poll loops."
+    }
+  ]
+}

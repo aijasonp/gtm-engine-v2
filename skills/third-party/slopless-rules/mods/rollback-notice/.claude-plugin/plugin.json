@@ -1,0 +1,9 @@
+{
+  "name": "rollback-notice",
+  "version": "0.1.0",
+  "description": "When a gate denies a Bash call, tells the model the whole call was rolled back and must be re-run in full; refuses git commit -F from shared /tmp.",
+  "author": {
+    "name": "BioInfo",
+    "url": "https://github.com/BioInfo"
+  }
+}

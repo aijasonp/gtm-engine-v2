@@ -1,0 +1,91 @@
+{
+  "version": "1.0",
+  "last_updated": "2026-06-22",
+  "description": "Signal decay configuration. Controls how signal strength diminishes over time. Inspired by gtm-starter-kit decay logic.",
+  "decay_model": "linear",
+  "default_decay_days": 90,
+  "strength_multipliers": {
+    "high": 1.0,
+    "medium": 0.7,
+    "low": 0.4
+  },
+  "category_overrides": {
+    "regulatory-filing": {
+      "decay_days": 365,
+      "notes": "Annual filings remain relevant for the full reporting cycle. 10-K risk factors persist until next filing."
+    },
+    "ai-investment": {
+      "decay_days": 180,
+      "notes": "AI investment announcements remain relevant for ~6 months as programs ramp up."
+    },
+    "leadership-changes": {
+      "decay_days": 90,
+      "notes": "New leaders make decisions fast. 90-day window is when vendor evaluations happen."
+    },
+    "hiring-patterns": {
+      "decay_days": 30,
+      "notes": "Job postings are perishable. After 30 days they're either filled or stale."
+    },
+    "technology-shifts": {
+      "decay_days": 180,
+      "notes": "Platform migrations take months. Signal remains relevant through implementation."
+    },
+    "competitive-movement": {
+      "decay_days": 60,
+      "notes": "Vendor evaluation windows are short. Act fast or the decision is made without you."
+    },
+    "corporate-events": {
+      "decay_days": 180,
+      "notes": "M&A, IPO, funding create extended buying windows as integration/scaling occurs."
+    },
+    "compliance-triggers": {
+      "decay_days": 365,
+      "notes": "Regulatory changes create long compliance tails. Enforcement actions have multi-year remediation."
+    }
+  },
+  "scoring": {
+    "fresh": {
+      "threshold_days": 14,
+      "label": "Fresh",
+      "score_multiplier": 1.0,
+      "notes": "Signal detected in last 14 days. Maximum relevance. Prioritize outreach."
+    },
+    "warm": {
+      "threshold_days": 60,
+      "label": "Warm",
+      "score_multiplier": 0.75,
+      "notes": "Signal 14-60 days old. Still relevant. Standard outreach timing."
+    },
+    "stale": {
+      "threshold_days": null,
+      "label": "Stale",
+      "score_multiplier": 0.4,
+      "notes": "Signal 60+ days old but not expired. Use as supporting context, not primary trigger."
+    },
+    "expired": {
+      "threshold_days": null,
+      "label": "Expired",
+      "score_multiplier": 0.0,
+      "notes": "Signal past category decay_days. Drop from active scoring. Retain for historical analysis."
+    }
+  },
+  "composite_score_formula": {
+    "description": "Overall signal score for an account = sum of (signal_strength_multiplier * age_score_multiplier * category_priority_weight)",
+    "category_priority_weights": {
+      "1": 1.0,
+      "2": 0.9,
+      "3": 0.85,
+      "4": 0.8,
+      "5": 0.75,
+      "6": 0.7,
+      "7": 0.65,
+      "8": 0.6
+    },
+    "thresholds": {
+      "tier1_enterprise": 2.5,
+      "tier2_qualified": 1.5,
+      "tier3_monitor": 0.5,
+      "below_threshold": 0.0
+    }
+  }
+}

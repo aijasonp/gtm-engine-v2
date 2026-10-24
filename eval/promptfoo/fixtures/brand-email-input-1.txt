@@ -1,0 +1,1 @@
+Write a short outbound email to {{SALES_LEADER}} at a prospect company about {{COMPANY}}'s agentic security platform. Mention that we help security teams cut alert triage cost. Keep it conversational, short paragraphs, no em dashes, no AI-sounding phrases. This is for {{SALES_LEADER}}, so em dashes are strictly banned.

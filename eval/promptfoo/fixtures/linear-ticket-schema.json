@@ -1,0 +1,14 @@
+{
+  "schema": {
+    "type": "object",
+    "required": ["title", "description", "priority", "assignee", "relatedTasks"],
+    "additionalProperties": false,
+    "properties": {
+      "title": {"type": "string"},
+      "description": {"type": "string"},
+      "priority": {"type": "string"},
+      "assignee": {"type": "string"},
+      "relatedTasks": {"type": "array", "items": {"type": "string"}}
+    }
+  }
+}

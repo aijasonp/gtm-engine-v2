@@ -1,0 +1,26 @@
+[
+  {
+    "isTerminal": true,
+    "executedAt": "2026-08-21T18:13:36.028Z",
+    "email": "jane.doe@acme.com",
+    "phone": "",
+    "job_title": "CTO",
+    "last_name": "Doe",
+    "first_name": "Jane",
+    "company_name": "Acme Corp",
+    "ready_to_call": true,
+    "capturedStdout": ""
+  },
+  {
+    "isTerminal": true,
+    "executedAt": "2026-08-21T18:12:47.681Z",
+    "email": "john@beta.com",
+    "phone": "+0000000",
+    "job_title": "VP Sales",
+    "last_name": "Smith",
+    "first_name": "John",
+    "company_name": "Beta Inc",
+    "ready_to_call": true,
+    "capturedStdout": ""
+  }
+]

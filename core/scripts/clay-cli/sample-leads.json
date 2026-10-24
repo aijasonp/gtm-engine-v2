@@ -1,0 +1,4 @@
+[
+  {"first_name":"Jane","last_name":"Doe","company_name":"Acme Corp","company_domain":"acme.com","job_title":"CTO","email":"jane.doe@acme.com","phone":""},
+  {"first_name":"John","last_name":"Smith","company_name":"Beta Inc","company_domain":"beta.com","job_title":"VP Sales","email":"john@beta.com","phone":"+0000000"}
+]

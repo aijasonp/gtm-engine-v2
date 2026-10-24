@@ -1,0 +1,1 @@
+Write a HubSpot note payload (JSON) for the AcmeCorp deal. Include: a summary of the call with Sarah Chen, next steps, and the deal stage. Output ONLY valid JSON with keys: dealId, noteBody, nextStep, dealStage, ownerEmail. No markdown fences, no prose outside the JSON.

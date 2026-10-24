@@ -1,0 +1,9 @@
+{
+  "name": "secrets-guard",
+  "version": "0.1.0",
+  "description": "Denies writes to secret files and writes whose content carries a credential, with the reason shown.",
+  "author": {
+    "name": "BioInfo",
+    "url": "https://github.com/BioInfo"
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "generated_at": "<string>",
+  "lookback_days": "<number>",
+  "analysis": {
+    "workbook_stats": {
+      "unknown": {
+        "total_accounts": "<number>",
+        "unique_domains": "<number>",
+        "duplicate_count": "<number>",
+        "top_verticals": {
+          "unknown": "<number>"
+        },
+        "signal_type_distribution": {
+          "none": "<number>"
+        },
+        "signal_strength_distribution": {
+          "unknown": "<number>"
+        }
+      }
+    },
+    "total_dispatches": "<number>",
+    "unique_domains": "<number>",
+    "duplicate_domains_count": "<number>",
+    "duplicate_domain_list": {}
+  },
+  "costs": {
+    "per_workbook": {
+      "unknown": {
+        "estimated_credits": "<number>",
+        "cost_breakdown": {
+          "company_enrichment": {
+            "per_account": "<number>",
+            "credit_per_enrichment": "<number>",
+            "total_credits": "<number>"
+          },
+          "person_enrichment": {
+            "per_account": "<number>",
+            "credit_per_enrichment": "<number>",
+            "total_credits": "<number>"
+          },
+          "email_waterfall": {
+            "per_account": "<number>",
+            "credit_per_enrichment": "<number>",
+            "total_credits": "<number>"
+          },
+          "ai_column": {
+            "per_account": "<number>",
+            "credit_per_enrichment": "<number>",
+            "total_credits": "<number>"
+          }
+        },
+        "duplicate_waste_credits": "<number>",
+        "low_signal_waste_credits": "<number>",
+        "total_waste_credits": "<number>",
+        "waste_percentage": "<number>"
+      }
+    },
+    "total_estimated_credits": "<number>",
+    "total_waste_credits": "<number>",
+    "overall_waste_percentage": "<number>",
+    "estimated_monthly_cost_usd": "<number>"
+  },
+  "recommendations": [
+    {
+      "id": "<string>",
+      "priority": "<string>",
+      "category": "<string>",
+      "title": "<string>",
+      "detail": "<string>",
+      "action": "<string>",
+      "estimated_savings_credits": "<number>"
+    }
+  ]
+}

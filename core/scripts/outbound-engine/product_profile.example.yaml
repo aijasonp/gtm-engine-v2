@@ -1,0 +1,120 @@
+# Product profile for the scoring engine (typesafe_client.py).
+# Copy this file, fill it in for the product you sell, and point
+# GTM_PRODUCT_PROFILE at your copy. Every scoring prompt is built from it.
+# This example is a fictional workflow automation product.
+
+product_name: "Example Platform"
+
+product_summary: >
+  A workflow automation platform that lets operations teams replace manual,
+  ticket-driven changes with governed, self-service automation.
+
+ideal_customer: >
+  Companies with 1,000+ employees running large, complex infrastructure,
+  a dedicated operations or platform team, and a stated goal to automate
+  or modernize how changes get made.
+
+# Short noun phrase used inside prompts: "...actively evaluating or needing <need>?"
+need: "workflow automation and orchestration"
+
+# Evidence the engine should look for when judging buying intent.
+intent_evidence: >
+  automation or platform engineering job postings, new operations or
+  infrastructure leadership, modernization programs, tool consolidation,
+  outages blamed on manual change
+
+# Extra hint for "does this company have the problem we solve?"
+problem_evidence: >
+  Look for manual change processes, long change windows, ticket backlogs,
+  multiple overlapping automation tools, or audit findings about change control.
+
+# Exactly 5 levels, worst to best.
+icp_criteria:
+  - "Poor fit - wrong size or industry, no operations team, no automation need"
+  - "Weak fit - small operations footprint, unclear need"
+  - "Moderate fit - real operations team, some automation need, partial ICP match"
+  - "Strong fit - large complex environment, clear automation gap, matches size and industry"
+  - "Perfect fit - large complex environment, active modernization program, visible pain from manual change"
+
+pain_points:
+  manual_change: "Manual, ticket-driven changes that slow delivery"
+  tool_sprawl: "Too many disconnected automation scripts and tools"
+  change_risk: "Outages and errors caused by manual change"
+  compliance: "Audit and change-control requirements"
+  team_capacity: "Operations team can not keep up with request volume"
+  self_service: "Other teams want self-service instead of waiting on ops"
+
+industries:
+  financial_services: "Banking, insurance, fintech, asset management"
+  telecom: "Carriers, cable, managed service providers"
+  technology: "SaaS, cloud, enterprise software"
+  healthcare: "Healthcare, pharma, biotech, medical devices"
+  government: "Federal, state, local government and defense"
+  energy: "Oil, gas, utilities, renewable energy"
+  retail: "Retail, e-commerce, consumer goods"
+  manufacturing: "Manufacturing, industrial, automotive"
+  other: "Does not clearly fit the above categories"
+
+company_sizes:
+  startup: "Under 100 employees"
+  smb: "100-500 employees"
+  mid_market: "500-2000 employees"
+  enterprise: "2000-10000 employees"
+  large_enterprise: "10000+ employees"
+
+# Exactly 2 yes/no fit signals. {company} is replaced with the account name.
+# key = field name in results, label = how it shows in account notes.
+fit_signals:
+  - key: has_complex_environment
+    label: "Complex Environment"
+    question: >
+      Does {company} run a large or complex infrastructure environment
+      (many sites, hybrid cloud, many vendors, large device or service counts)?
+  - key: has_automation_initiative
+    label: "Automation Initiative"
+    question: >
+      Does {company} show an active automation or modernization initiative
+      (public program, leadership mandate, automation hiring)?
+
+signal_types:
+  hiring: "Job postings for operations, platform or automation roles"
+  funding: "Funding round, investment, or M&A activity"
+  leadership_change: "New operations, infrastructure, or engineering leadership"
+  initiative: "Public modernization, automation, or consolidation initiative"
+  incident: "Outage or incident tied to change or operations"
+  compliance: "Audit, regulatory action, or compliance deadline"
+  partnership: "Strategic partnership or vendor relationship"
+  expansion: "Office expansion, market entry, or headcount growth"
+  contraction: "Layoffs, budget cuts, or restructuring"
+  other: "Signal that does not fit the above categories"
+
+current_approach_options:
+  no_solution: "No visible solution; manual process"
+  built_internal: "Home-grown scripts or internal tooling"
+  using_competitor: "Using a competing product"
+  evaluating: "Actively evaluating solutions"
+  unknown: "Cannot determine from available data"
+
+# Verified claims writers may use. Nothing outside this list gets stated as fact.
+proof_points:
+  - "Example: customer X cut change lead time from 5 days to 4 hours (replace with a real, approved proof point)"
+
+# Differentiators, stated as customer outcomes. Battlecards and SCQA answers anchor here.
+differentiators:
+  - "Example: changes that took days ship in minutes, with approvals built in"
+  - "Example: works across the vendors and tools the customer already runs"
+  - "Example: live in weeks, not a six-month integration project"
+
+# Competitor landscape. Never invent a weakness; mark unverified points "rep should verify".
+competitors:
+  - name: "Example Competitor A"
+    angle: "Their primary positioning"
+    counter: "Our sourced counter-position"
+
+# Optional: override composite priority weights (must sum to 1.0).
+priority_weights:
+  icp: 0.35
+  intent: 0.20
+  fit_a: 0.15
+  fit_b: 0.15
+  urgency: 0.15

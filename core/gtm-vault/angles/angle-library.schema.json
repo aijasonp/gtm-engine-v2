@@ -1,0 +1,16 @@
+[
+  {
+    "angle_id": "<string>",
+    "name": "<string>",
+    "description": "<string>",
+    "verticals_tested": [],
+    "results": {
+      "sent": "<number>",
+      "replied": "<number>",
+      "positive_rate": "<number>"
+    },
+    "status": "<string>",
+    "source": "<string>",
+    "created_at": "<string>"
+  }
+]

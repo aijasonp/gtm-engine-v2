@@ -1,0 +1,35 @@
+# secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+# deps and builds
+node_modules/
+.next/
+dist/
+build/
+*.tsbuildinfo
+__pycache__/
+*.pyc
+.venv/
+# runtime output
+logs/
+*.log
+output/
+state/
+cache/
+reports/
+.deepeval/
+# media
+*.mp4
+*.mov
+*.wav
+*.mp3
+# local data pulls
+sheet_raw.json
+*_results.json
+*_runs.json
+*.bak
+*.bak-*
+.DS_Store

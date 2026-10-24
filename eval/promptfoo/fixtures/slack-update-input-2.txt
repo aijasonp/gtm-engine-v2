@@ -1,0 +1,1 @@
+Write a Slack update for #gtm-agent about the Globex Industries deal. Include: regulator-driven urgency, CFO Linda Park controls budget, POC due mid-November, board presentation in December. Casual internal tone, Slack mrkdwn formatting, no pipe tables.

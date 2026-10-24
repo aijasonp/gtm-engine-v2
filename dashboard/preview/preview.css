@@ -1,0 +1,4 @@
+@import '../src/styles/globals.css';
+@source '../src';
+@source './';
+:root { --font-sans: 'Geist', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif; --font-mono: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace; }

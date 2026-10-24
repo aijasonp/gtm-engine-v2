@@ -1,0 +1,24 @@
+CALL TRANSCRIPT (2026-09-22, 30 min, Zoom)
+Attendees: Sarah Chen (VP Security, AcmeCorp), Marcus Webb ({{COMPANY}} AE)
+
+Sarah: Thanks for the time. We're drowning in alert fatigue. Our SOC gets 40,000 alerts a day and the team is burning out. We tried a SOAR two years ago and it was a disaster, we had to rip it out.
+
+Marcus: What's the actual cost of that today?
+
+Sarah: We estimate each alert costs us about $4 to triage manually. With 40k a day that's roughly $160k a day in triage cost. We want to get that down to under $1 per alert.
+
+Marcus: Who owns the budget for this?
+
+Sarah: That's me. I have a $2M security tooling budget for this fiscal year. I can sign off up to $500k without going to the board.
+
+Marcus: How do you make the decision?
+
+Sarah: We need a proof of concept in our own environment, on-prem, for 30 days. If it cuts triage time by at least 50% and the audit trail holds up, we'll move forward. Procurement runs a standard vendor security review, takes about 3 weeks.
+
+Marcus: Who else is involved?
+
+Sarah: Our CISO, Dana Foster, is the final sign-off. The SOC lead, Priya Nair, would be the champion on the ground. We're also looking at a competitor, SentinelOne, but they can't do on-prem model-agnostic.
+
+Marcus: What's the timeline?
+
+Sarah: We want this live before Q4. If the POC works, we'd sign by end of October.

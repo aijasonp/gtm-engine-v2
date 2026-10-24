@@ -1,0 +1,1 @@
+Write a short outbound email to {{AE_2}} at a prospect company about {{COMPANY}}'s AI governance platform. Mention model-agnostic, on-prem deployment, and audit trails. Conversational, no em dashes, no AI-sounding phrases. This is for {{AE_2}}, so em dashes are strictly banned.

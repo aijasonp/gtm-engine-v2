@@ -1,0 +1,9 @@
+{
+  "name": "read-first",
+  "version": "0.1.0",
+  "description": "Clears the engine's 'File has not been read yet' error: Edit reads the file and retries; Write hands the model the file's head with the error.",
+  "author": {
+    "name": "BioInfo",
+    "url": "https://github.com/BioInfo"
+  }
+}

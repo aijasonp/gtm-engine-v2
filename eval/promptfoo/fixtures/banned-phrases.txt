@@ -1,0 +1,149 @@
+# Banned phrases for the GTM agent anti-slop / brand-voice regression checks.
+# Derived from references/company-voice-system-prompt.md and the unslop
+# banned-phrase list (skills/unslop/references/taboo-phrases.md).
+# One phrase per line, lowercase. Matched case-insensitively against output.
+# NOTE: em dashes are handled separately (see markdown_lint.py) because they
+# are a character-level ban, not a phrase.
+
+# --- {{COMPANY}} voice system prompt: banned words ---
+delve
+leverage
+utilize
+robust
+seamless
+showcase
+foster
+harness
+commence
+ascertain
+endeavor
+facilitate
+vibrant
+pivotal
+crucial
+testament
+tapestry
+landscape
+underscore
+enduring
+intricate
+interplay
+garner
+myriad
+realm
+navigate
+revolutionize
+game-changing
+synergy
+cutting-edge
+groundbreaking
+transformative
+holistic
+multifaceted
+nuanced
+bolster
+unveil
+streamline
+elucidate
+optimal
+
+# --- {{COMPANY}} voice system prompt: banned phrases ---
+in today's fast-paced
+in today's competitive
+it's worth noting that
+it's important to note
+needless to say
+at its core
+the real question is
+what really matters
+let's dive in
+let's explore
+let's break this down
+here's what you need to know
+the future looks bright
+only time will tell
+i hope this helps
+feel free to reach out
+in a world where
+but here's the kicker
+here's the thing
+certainly,
+of course!
+great question!
+you're absolutely right
+moreover,
+furthermore,
+additionally,
+in conclusion,
+worth 15 minutes
+worth a quick conversation
+happy to show you
+would it make sense to connect
+i'd love to chat
+let's hop on a call
+
+# --- unslop taboo phrases ---
+the uncomfortable truth is
+it turns out
+let me be clear
+the truth is
+i'll say it again
+i'm going to be honest
+can we talk about
+here's what i find interesting
+here's the problem though
+let's be real
+here's the deal
+here's what nobody tells you
+let that sink in
+this matters because
+make no mistake
+here's why that matters
+read that again
+this is important
+this cannot be overstated
+in summary
+to summarize
+firstly
+secondly
+thirdly
+ultimately,
+underscore the importance
+highlights the importance
+treasure trove
+ever-evolving
+ever-changing
+rich mosaic
+mosaic of
+speak for themselves
+speaks for itself
+tells a clear story
+paints a clear picture
+leaves a lasting impact
+marks a pivotal moment
+represents a significant shift
+indelible mark
+deeply rooted
+rich history
+natural beauty
+nestled in
+boasts a
+serves as a
+stands as a
+not just
+not only
+despite its
+let us delve into
+in today's landscape
+in today's world
+in today's era
+at the heart of
+it is worth noting
+a testament to
+paving the way
+plays a crucial role
+in an era where
+the intersection of
+a beacon of
+sends a strong message
+it remains to be seen

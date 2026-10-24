@@ -1,0 +1,142 @@
+{
+  "updated_at": "<string>",
+  "campaigns": {
+    "0000000": {
+      "name": "<string>",
+      "workbook": "<string>",
+      "last_synced": "<string>",
+      "totals": {
+        "sent": "<number>",
+        "opened": "<number>",
+        "replied": "<number>",
+        "positive_replies": "<number>",
+        "bounced": "<number>",
+        "open_rate": "<number>",
+        "reply_rate": "<number>",
+        "positive_reply_rate": "<number>",
+        "bounce_rate": "<number>"
+      },
+      "steps": {}
+    },
+    "0000000": {
+      "name": "<string>",
+      "workbook": "<string>",
+      "last_synced": "<string>",
+      "totals": {
+        "sent": "<number>",
+        "opened": "<number>",
+        "replied": "<number>",
+        "positive_replies": "<number>",
+        "bounced": "<number>",
+        "open_rate": "<number>",
+        "reply_rate": "<number>",
+        "positive_reply_rate": "<number>",
+        "bounce_rate": "<number>"
+      },
+      "steps": {}
+    },
+    "0000000": {
+      "name": "<string>",
+      "workbook": "<string>",
+      "last_synced": "<string>",
+      "totals": {
+        "sent": "<number>",
+        "opened": "<number>",
+        "replied": "<number>",
+        "positive_replies": "<number>",
+        "bounced": "<number>",
+        "open_rate": "<number>",
+        "reply_rate": "<number>",
+        "positive_reply_rate": "<number>",
+        "bounce_rate": "<number>"
+      },
+      "steps": {}
+    },
+    "0000000": {
+      "name": "<string>",
+      "workbook": "<string>",
+      "last_synced": "<string>",
+      "totals": {
+        "sent": "<number>",
+        "opened": "<number>",
+        "replied": "<number>",
+        "positive_replies": "<number>",
+        "bounced": "<number>",
+        "open_rate": "<number>",
+        "reply_rate": "<number>",
+        "positive_reply_rate": "<number>",
+        "bounce_rate": "<number>"
+      },
+      "steps": {}
+    },
+    "0000000": {
+      "name": "<string>",
+      "workbook": "<string>",
+      "last_synced": "<string>",
+      "totals": {
+        "sent": "<number>",
+        "opened": "<number>",
+        "replied": "<number>",
+        "positive_replies": "<number>",
+        "bounced": "<number>",
+        "open_rate": "<number>",
+        "reply_rate": "<number>",
+        "positive_reply_rate": "<number>",
+        "bounce_rate": "<number>"
+      },
+      "steps": {}
+    },
+    "0000000": {
+      "name": "<string>",
+      "workbook": "<string>",
+      "last_synced": "<string>",
+      "totals": {
+        "sent": "<number>",
+        "opened": "<number>",
+        "replied": "<number>",
+        "positive_replies": "<number>",
+        "bounced": "<number>",
+        "open_rate": "<number>",
+        "reply_rate": "<number>",
+        "positive_reply_rate": "<number>",
+        "bounce_rate": "<number>"
+      },
+      "steps": {}
+    },
+    "0000000": {
+      "name": "<string>",
+      "workbook": "<string>",
+      "last_synced": "<string>",
+      "totals": {
+        "sent": "<number>",
+        "opened": "<number>",
+        "replied": "<number>",
+        "positive_replies": "<number>",
+        "bounced": "<number>",
+        "open_rate": "<number>",
+        "reply_rate": "<number>",
+        "positive_reply_rate": "<number>",
+        "bounce_rate": "<number>"
+      },
+      "steps": {}
+    },
+    "0000000": {
+      "name": "<string>",
+      "workbook": "<string>",
+      "last_synced": "<string>",
+      "totals": {
+        "sent": "<number>",
+        "opened": "<number>",
+        "replied": "<number>",
+        "positive_replies": "<number>",
+        "bounced": "<number>",
+        "open_rate": "<number>",
+        "reply_rate": "<number>",
+        "positive_reply_rate": "<number>",
+        "bounce_rate": "<number>"
+      },
+      "steps": {}
+    }
+  },
+  "last_synced": "<string>"
+}

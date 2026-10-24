@@ -1,0 +1,357 @@
+# Promptfoo golden-input regression suite for the GTM agent.
+#
+# Runs a set of golden prompts against the GTM agent's core output paths and fails on
+# regression: broken JSON, bad markdown, banned slop phrases, missing MEDDPICC
+# fields, off-brand tone, and customer-name isolation.
+#
+# Run:  ./run.sh            (or: npx promptfoo eval)
+# View: npx promptfoo view  (local web report)
+
+# --- Providers ---------------------------------------------------------------
+# Primary generator: {{COMPANY}} API (OpenAI-compatible). COMPANY_API_KEY in ~/.openclaw/.env
+providers:
+  - id: openai:gpt-5
+    config:
+      apiBaseUrl: https://llm.example.com/v1
+      apiKeyEnvar: COMPANY_API_KEY
+      temperature: 0.2
+
+# Judge for llm-rubric faithfulness checks (same {{COMPANY}} API, a strong model).
+# Overridden per-test where a rubric is used.
+defaultTest:
+  options:
+    provider:
+      - id: openai:claude-sonnet-4-6
+        config:
+          apiBaseUrl: https://llm.example.com/v1
+          apiKeyEnvar: COMPANY_API_KEY
+          temperature: 0
+
+# --- Prompts ----------------------------------------------------------------
+prompts:
+  # 1. MEDDPICC call summary generation
+  - id: meddpicc
+    label: meddpicc-summary
+    raw: |
+      You are the GTM agent, {{COMPANY}}'s sales assistant. Read the call transcript below and
+      produce a MEDDPICC call summary as STRICT JSON with exactly these keys:
+      metrics, economicBuyer, decisionCriteria, decisionProcess, paperProcess,
+      identifyPain, champion, competition.
+      Rules:
+      - Only include facts stated in the transcript. Do NOT invent metrics,
+        customer names, or dollar figures.
+      - If a field is not mentioned, use an empty string "".
+      - Output ONLY the JSON object. No markdown fences, no prose, no commentary.
+      Transcript:
+      {{transcript}}
+
+  # 2. Slack markdown output
+  - id: slack
+    label: slack-update
+    raw: |
+      You are the GTM agent, {{COMPANY}}'s internal sales assistant. Write a Slack update for
+      the channel described below.
+      Rules:
+      - Use Slack mrkdwn formatting: *bold* for emphasis, bullet lists with "-".
+      - Do NOT use pipe tables (Slack does not render them).
+      - Do NOT use em dashes (U+2014). Use commas, periods, colons, or parentheses.
+      - Do NOT use HTML tags.
+      - Keep it casual, direct, internal tone. No AI-sounding phrases.
+      Task:
+      {{task}}
+
+  # 3. JSON output paths (HubSpot note payloads, Linear ticket bodies)
+  - id: json
+    label: json-payload
+    raw: |
+      You are the GTM agent, {{COMPANY}}'s sales assistant. Complete the task below.
+      Rules:
+      - Output ONLY valid JSON. No markdown fences, no prose, no commentary.
+      - Match the exact schema requested.
+      Task:
+      {{task}}
+
+  # 4. Anti-slop / brand voice (outbound email)
+  - id: brand
+    label: brand-voice-email
+    raw: |
+      You are the GTM agent, writing on behalf of {{COMPANY}}, an enterprise agentic security
+      company. We build AI agents that run DevOps and SecOps workflows
+      autonomously. Model-agnostic, data-sovereign, on-premise or cloud.
+      Register: direct, technical, plainspoken. Vary sentence rhythm. Active
+      voice. Concrete over abstract. Numbers over adjectives.
+      Hard rules:
+      - No em dashes. Ever. Use commas, periods, colons, or parentheses.
+      - No AI-sounding phrases: revolutionize, game-changing, leverage, synergy,
+        cutting-edge, best-in-class, AI-powered, next-generation.
+      - No filler words or hedge phrases.
+      - Never invent facts. Every statistic and named source must be real.
+      Task:
+      {{task}}
+
+  # 5. Customer name isolation
+  - id: isolation
+    label: customer-isolation
+    raw: |
+      You are the GTM agent, {{COMPANY}}'s sales assistant. Write a pre-call brief for the
+      meeting described below.
+      Rules:
+      - This brief is scoped to ONE customer only. Do NOT mention any other
+        customer, company, or prospect by name anywhere in the output.
+      - Do not reference other deals, other customers, or other companies.
+      - Stay strictly within the scope of the described customer.
+      - Do NOT use em dashes (U+2014). Use commas, periods, colons, or parentheses.
+      - Do NOT use AI-sounding phrases (leverage, game-changing, cutting-edge).
+      Task:
+      {{task}}
+
+# --- Test cases -------------------------------------------------------------
+tests:
+  # ============ 1. MEDDPICC call summary generation ============
+  - description: "MEDDPICC: AcmeCorp transcript -> valid JSON with all 8 fields, no hallucinated metrics"
+    prompts:
+      - meddpicc-summary
+    vars:
+      transcript: file://fixtures/meddpicc-call-transcript-1.txt
+    assert:
+      - type: javascript
+        value: |
+          const out = typeof output === 'string' ? output : JSON.stringify(output);
+          const cleaned = out.replace(/^```(?:json)?\s*/,'').replace(/\s*```$/,'').trim();
+          const obj = JSON.parse(cleaned);
+          const required = ['metrics','economicBuyer','decisionCriteria','decisionProcess','paperProcess','identifyPain','champion','competition'];
+          const missing = required.filter(k => !(k in obj));
+          if (missing.length) throw new Error('missing MEDDPICC fields: ' + missing.join(','));
+          // No hallucinated metrics: the summary must not invent a customer name not in the transcript.
+          const s = JSON.stringify(obj);
+          if (/Globex|{{CUSTOMER_D}}|{{PARTNER_A}}/.test(s)) throw new Error('invented customer name in MEDDPICC summary');
+          return true;
+      - type: not-contains
+        value: "Globex"
+      - type: not-contains
+        value: "{{CUSTOMER_D}}"
+      - type: not-contains
+        value: "{{PARTNER_A}}"
+      - type: not-contains
+        value: "—"
+
+  - description: "MEDDPICC: Globex transcript -> valid JSON, all 8 fields, no invented customer names"
+    prompts:
+      - meddpicc-summary
+    vars:
+      transcript: file://fixtures/meddpicc-call-transcript-2.txt
+    assert:
+      - type: javascript
+        value: |
+          const out = typeof output === 'string' ? output : JSON.stringify(output);
+          const cleaned = out.replace(/^```(?:json)?\s*/,'').replace(/\s*```$/,'').trim();
+          const obj = JSON.parse(cleaned);
+          const required = ['metrics','economicBuyer','decisionCriteria','decisionProcess','paperProcess','identifyPain','champion','competition'];
+          const missing = required.filter(k => !(k in obj));
+          if (missing.length) throw new Error('missing MEDDPICC fields: ' + missing.join(','));
+          const s = JSON.stringify(obj);
+          if (/AcmeCorp|{{CUSTOMER_D}}|{{PARTNER_A}}/.test(s)) throw new Error('invented customer name in MEDDPICC summary');
+          return true;
+      - type: not-contains
+        value: "AcmeCorp"
+      - type: not-contains
+        value: "{{CUSTOMER_D}}"
+      - type: not-contains
+        value: "{{PARTNER_A}}"
+      - type: not-contains
+        value: "—"
+
+  - description: "MEDDPICC: schema conformance via python validator (AcmeCorp)"
+    prompts:
+      - meddpicc-summary
+    vars:
+      transcript: file://fixtures/meddpicc-call-transcript-1.txt
+    assert:
+      - type: python
+        value: |
+          import json, subprocess, sys
+          p = subprocess.run([sys.executable, "tests/json_schema.py", "fixtures/meddpicc-schema.json"], input=output if isinstance(output,str) else str(output), capture_output=True, text=True)
+          try:
+              r = json.loads(p.stdout)
+          except Exception:
+              print("ASSERT ERROR: validator error: : " + p.stderr, file=sys.stderr)
+              return False
+          if not r["pass"]:
+              print("ASSERT FAIL:", json.dumps(r["errors"]) if r["errors"] else "ok", file=sys.stderr)
+          return bool(r["pass"])
+
+  # ============ 2. Slack markdown output ============
+  - description: "Slack: AcmeCorp update -> valid mrkdwn, no pipe tables, no em dashes"
+    prompts:
+      - slack-update
+    vars:
+      task: file://fixtures/slack-update-input-1.txt
+    assert:
+      - type: python
+        value: |
+          import json, subprocess, sys
+          p = subprocess.run([sys.executable, "tests/markdown_lint.py"], input=output if isinstance(output,str) else str(output), capture_output=True, text=True)
+          try:
+              r = json.loads(p.stdout)
+          except Exception:
+              print("ASSERT ERROR: linter error: : " + p.stderr, file=sys.stderr)
+              return False
+          if not r["pass"]:
+              print("ASSERT FAIL:", json.dumps(r["problems"]) if r["problems"] else "ok", file=sys.stderr)
+          return bool(r["pass"])
+      - type: not-contains
+        value: "|"
+      - type: not-contains
+        value: "—"
+
+  - description: "Slack: Globex update -> valid mrkdwn, no pipe tables, no em dashes"
+    prompts:
+      - slack-update
+    vars:
+      task: file://fixtures/slack-update-input-2.txt
+    assert:
+      - type: python
+        value: |
+          import json, subprocess, sys
+          p = subprocess.run([sys.executable, "tests/markdown_lint.py"], input=output if isinstance(output,str) else str(output), capture_output=True, text=True)
+          try:
+              r = json.loads(p.stdout)
+          except Exception:
+              print("ASSERT ERROR: linter error: : " + p.stderr, file=sys.stderr)
+              return False
+          if not r["pass"]:
+              print("ASSERT FAIL:", json.dumps(r["problems"]) if r["problems"] else "ok", file=sys.stderr)
+          return bool(r["pass"])
+      - type: not-contains
+        value: "|"
+      - type: not-contains
+        value: "—"
+
+  # ============ 3. JSON output paths ============
+  - description: "JSON: HubSpot note payload -> valid JSON matching schema"
+    prompts:
+      - json-payload
+    vars:
+      task: file://fixtures/json-hubspot-input-1.txt
+    assert:
+      - type: python
+        value: |
+          import json, subprocess, sys
+          p = subprocess.run([sys.executable, "tests/json_schema.py", "fixtures/hubspot-note-schema.json"], input=output if isinstance(output,str) else str(output), capture_output=True, text=True)
+          try:
+              r = json.loads(p.stdout)
+          except Exception:
+              print("ASSERT ERROR: validator error: : " + p.stderr, file=sys.stderr)
+              return False
+          if not r["pass"]:
+              print("ASSERT FAIL:", json.dumps(r["errors"]) if r["errors"] else "ok", file=sys.stderr)
+          return bool(r["pass"])
+
+  - description: "JSON: Linear ticket body -> valid JSON matching schema"
+    prompts:
+      - json-payload
+    vars:
+      task: file://fixtures/json-linear-input-1.txt
+    assert:
+      - type: python
+        value: |
+          import json, subprocess, sys
+          p = subprocess.run([sys.executable, "tests/json_schema.py", "fixtures/linear-ticket-schema.json"], input=output if isinstance(output,str) else str(output), capture_output=True, text=True)
+          try:
+              r = json.loads(p.stdout)
+          except Exception:
+              print("ASSERT ERROR: validator error: : " + p.stderr, file=sys.stderr)
+              return False
+          if not r["pass"]:
+              print("ASSERT FAIL:", json.dumps(r["errors"]) if r["errors"] else "ok", file=sys.stderr)
+          return bool(r["pass"])
+
+  # ============ 4. Anti-slop / brand voice ============
+  - description: "Brand: {{SALES_LEADER}} email -> no banned phrases, no em dashes"
+    prompts:
+      - brand-voice-email
+    vars:
+      task: file://fixtures/brand-email-input-1.txt
+    assert:
+      - type: python
+        value: |
+          import json, subprocess, sys
+          p = subprocess.run([sys.executable, "tests/banned_phrases.py", "fixtures/banned-phrases.txt"], input=output if isinstance(output,str) else str(output), capture_output=True, text=True)
+          try:
+              r = json.loads(p.stdout)
+          except Exception:
+              print("ASSERT ERROR: scanner error: : " + p.stderr, file=sys.stderr)
+              return False
+          if not r["pass"]:
+              print("ASSERT FAIL:", "banned: " + ",".join(r["banned_phrases_found"]) if r["banned_phrases_found"] else "ok", file=sys.stderr)
+          return bool(r["pass"])
+      - type: not-contains
+        value: "—"
+      - type: not-contains
+        value: "leverage"
+      - type: not-contains
+        value: "synergy"
+      - type: not-contains
+        value: "cutting-edge"
+      - type: not-contains
+        value: "revolutionize"
+
+  - description: "Brand: {{AE_2}} email -> no banned phrases, no em dashes"
+    prompts:
+      - brand-voice-email
+    vars:
+      task: file://fixtures/brand-email-input-2.txt
+    assert:
+      - type: python
+        value: |
+          import json, subprocess, sys
+          p = subprocess.run([sys.executable, "tests/banned_phrases.py", "fixtures/banned-phrases.txt"], input=output if isinstance(output,str) else str(output), capture_output=True, text=True)
+          try:
+              r = json.loads(p.stdout)
+          except Exception:
+              print("ASSERT ERROR: scanner error: : " + p.stderr, file=sys.stderr)
+              return False
+          if not r["pass"]:
+              print("ASSERT FAIL:", "banned: " + ",".join(r["banned_phrases_found"]) if r["banned_phrases_found"] else "ok", file=sys.stderr)
+          return bool(r["pass"])
+      - type: not-contains
+        value: "—"
+      - type: not-contains
+        value: "leverage"
+      - type: not-contains
+        value: "synergy"
+      - type: not-contains
+        value: "cutting-edge"
+      - type: not-contains
+        value: "revolutionize"
+
+  # ============ 5. Customer name isolation ============
+  - description: "Isolation: AcmeCorp brief must NOT mention Globex/{{CUSTOMER_D}}/{{PARTNER_A}}"
+    prompts:
+      - customer-isolation
+    vars:
+      task: file://fixtures/isolation-input-1.txt
+    assert:
+      - type: not-contains
+        value: "Globex"
+      - type: not-contains
+        value: "{{CUSTOMER_D}}"
+      - type: not-contains
+        value: "{{PARTNER_A}}"
+      - type: not-contains
+        value: "—"
+
+  - description: "Isolation: Globex brief must NOT mention AcmeCorp/{{CUSTOMER_D}}/{{PARTNER_A}}"
+    prompts:
+      - customer-isolation
+    vars:
+      task: file://fixtures/isolation-input-2.txt
+    assert:
+      - type: not-contains
+        value: "AcmeCorp"
+      - type: not-contains
+        value: "{{CUSTOMER_D}}"
+      - type: not-contains
+        value: "{{PARTNER_A}}"
+      - type: not-contains
+        value: "—"

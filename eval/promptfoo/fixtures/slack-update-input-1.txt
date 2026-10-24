@@ -1,0 +1,1 @@
+Write a Slack update for #salesteam about the AcmeCorp deal. Include: POC started this week, Sarah Chen is the champion, we're targeting a Q4 close, next step is the 30-day on-prem POC. Keep it casual and direct, internal tone. Use Slack mrkdwn formatting (bold, bullet lists). Do not use pipe tables.

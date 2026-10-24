@@ -1,0 +1,20 @@
+{
+  "schema": {
+    "type": "object",
+    "required": [
+      "metrics", "economicBuyer", "decisionCriteria", "decisionProcess",
+      "paperProcess", "identifyPain", "champion", "competition"
+    ],
+    "additionalProperties": false,
+    "properties": {
+      "metrics": {"type": "string"},
+      "economicBuyer": {"type": "string"},
+      "decisionCriteria": {"type": "string"},
+      "decisionProcess": {"type": "string"},
+      "paperProcess": {"type": "string"},
+      "identifyPain": {"type": "string"},
+      "champion": {"type": "string"},
+      "competition": {"type": "string"}
+    }
+  }
+}

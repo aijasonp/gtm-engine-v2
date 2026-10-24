@@ -1,0 +1,10 @@
+{
+  "_comment": "Copy to forecast_alerts.config.json. Owner IDs are CRM (HubSpot) owner IDs. Slack IDs are member IDs for DM delivery.",
+  "ae_roster_owner_ids": ["111111", "222222", "333333"],
+  "leadership_owner_ids": ["444444"],
+  "recipients": [
+    {"key": "revops", "slack_id": "U00000001", "scope": "all", "title": "All Teams", "show_missing_type_footer": true},
+    {"key": "sales_leader", "slack_id": "U00000002", "scope": "all", "title": "All Teams"},
+    {"key": "ae_manager", "slack_id": "U00000003", "scope": "roster", "title": "Account Executives"}
+  ]
+}

@@ -1,0 +1,904 @@
+{
+  "version": "1.0",
+  "last_updated": "2026-06-22",
+  "description": "Comprehensive signal taxonomy for {{COMPANY}} outbound engine. Inspired by ColdIQ 137-trigger framework + gtm-starter-kit signal decay patterns.",
+  "categories": [
+    {
+      "category_id": "regulatory-filing",
+      "name": "Regulatory & Financial Filings",
+      "priority": 1,
+      "description": "Public disclosures where companies explicitly acknowledge AI/cybersecurity risk. Highest-confidence signals because they are legally attested.",
+      "signals": [
+        {
+          "signal_id": "sec-10k-ai-risk",
+          "name": "10-K AI/Cybersecurity Risk Factor",
+          "description": "Annual SEC filing Risk Factors or MD&A section explicitly discusses AI/GenAI adoption and/or cybersecurity/data-security/regulatory risk.",
+          "detection_method": "SEC EDGAR full-text search on most recent 10-K",
+          "decay_days": 365,
+          "strength": "high",
+          "best_verticals": ["banking", "insurance", "pharma", "energy", "telecom"],
+          "outreach_window_days": 60,
+          "sample_hook": "Your 2025 10-K called out AI governance as a material risk. Most companies flagging that are 6-12 months from a compliance gap."
+        },
+        {
+          "signal_id": "sec-10q-ai-mention",
+          "name": "10-Q Quarterly AI/Security Update",
+          "description": "Quarterly filing references new AI initiatives, security incidents, or governance program updates.",
+          "detection_method": "SEC EDGAR full-text search on most recent 10-Q",
+          "decay_days": 120,
+          "strength": "medium",
+          "best_verticals": ["banking", "insurance", "retail", "manufacturing"],
+          "outreach_window_days": 30,
+          "sample_hook": "Your latest quarterly filing mentioned expanding AI capabilities. Are you scaling governance at the same speed?"
+        },
+        {
+          "signal_id": "eu-ai-act-disclosure",
+          "name": "EU AI Act Compliance Disclosure",
+          "description": "Company publicly discusses EU AI Act compliance preparations, high-risk AI system classification, or conformity assessments.",
+          "detection_method": "Press release search + annual report keyword scan",
+          "decay_days": 180,
+          "strength": "high",
+          "best_verticals": ["banking", "insurance", "pharma", "manufacturing", "technology"],
+          "outreach_window_days": 45,
+          "sample_hook": "You disclosed EU AI Act prep in your latest report. Most companies at your stage are finding the conformity assessment requirements more complex than expected."
+        },
+        {
+          "signal_id": "occ-mra-mria",
+          "name": "OCC MRA/MRIA on Technology Risk",
+          "description": "OCC examination results in a Matter Requiring Attention (MRA) or Matter Requiring Immediate Attention (MRIA) related to technology, model risk, or cybersecurity.",
+          "detection_method": "OCC enforcement actions database + company disclosure",
+          "decay_days": 365,
+          "strength": "high",
+          "best_verticals": ["banking"],
+          "outreach_window_days": 30,
+          "sample_hook": "Regulatory findings on technology risk create urgency. Companies in your position typically need a governance framework in place within 12 months."
+        },
+        {
+          "signal_id": "sox-ai-controls",
+          "name": "SOX Internal Controls - AI Mention",
+          "description": "Company's SOX 404 disclosure or internal controls narrative references AI/ML systems in scope of controls testing.",
+          "detection_method": "Proxy statement and 10-K internal controls section",
+          "decay_days": 365,
+          "strength": "medium",
+          "best_verticals": ["banking", "insurance", "retail", "energy", "manufacturing"],
+          "outreach_window_days": 60,
+          "sample_hook": "When AI models are in scope for SOX controls, audit teams need a governance trail that doesn't exist in most orgs yet."
+        },
+        {
+          "signal_id": "fdic-consent-order",
+          "name": "FDIC/Fed Consent Order - Technology Related",
+          "description": "Bank receives a consent order from FDIC, Federal Reserve, or state regulator related to technology risk management, BSA/AML, or cybersecurity.",
+          "detection_method": "FDIC enforcement actions database",
+          "decay_days": 730,
+          "strength": "high",
+          "best_verticals": ["banking"],
+          "outreach_window_days": 14,
+          "sample_hook": "Consent orders on technology risk typically require demonstrable progress within 180 days. Governance infrastructure that satisfies examiners is what we do."
+        },
+        {
+          "signal_id": "state-privacy-law",
+          "name": "State Privacy Law Applicability",
+          "description": "Company headquartered in or doing significant business in a state with a new or amended privacy/AI law (CCPA/CPRA, Colorado AI Act, etc.).",
+          "detection_method": "Company HQ + ops footprint vs. state AI/privacy law database",
+          "decay_days": 365,
+          "strength": "low",
+          "best_verticals": ["technology", "retail", "healthcare", "insurance"],
+          "outreach_window_days": 90,
+          "sample_hook": "The Colorado AI Act goes into effect next year. Companies deploying high-risk AI systems need documented governance before enforcement starts."
+        },
+        {
+          "signal_id": "proxy-ai-board-discussion",
+          "name": "Proxy Statement - Board AI Discussion",
+          "description": "Company's proxy statement or corporate governance filing mentions AI oversight at the board level, new AI committee, or board member with AI expertise.",
+          "detection_method": "SEC EDGAR proxy statement (DEF 14A) keyword scan",
+          "decay_days": 365,
+          "strength": "medium",
+          "best_verticals": ["banking", "insurance", "pharma", "energy", "technology"],
+          "outreach_window_days": 45,
+          "sample_hook": "Board-level AI oversight usually means the governance question is coming from the top. The next question is: what infrastructure makes that oversight possible?"
+        },
+        {
+          "signal_id": "earnings-call-ai",
+          "name": "Earnings Call AI Strategy Discussion",
+          "description": "CEO/CFO discusses AI strategy, investment, or challenges during quarterly earnings call.",
+          "detection_method": "Earnings transcript keyword search (Seeking Alpha, company IR)",
+          "decay_days": 90,
+          "strength": "medium",
+          "best_verticals": ["banking", "insurance", "retail", "telecom", "manufacturing"],
+          "outreach_window_days": 21,
+          "sample_hook": "Your CEO flagged AI as a priority on the last earnings call. In our experience, that executive commitment typically outpaces the governance infrastructure by 6+ months."
+        }
+      ]
+    },
+    {
+      "category_id": "ai-investment",
+      "name": "AI Investment & Initiatives",
+      "priority": 2,
+      "description": "Concrete commitments to AI adoption. Companies spending money on AI need governance before or shortly after deployment.",
+      "signals": [
+        {
+          "signal_id": "ai-budget-announcement",
+          "name": "Stated AI Investment/Budget",
+          "description": "Company publicly announces a specific dollar amount or multi-year budget for AI/GenAI initiatives.",
+          "detection_method": "Press release, earnings call transcript, or investor deck",
+          "decay_days": 180,
+          "strength": "high",
+          "best_verticals": ["banking", "insurance", "pharma", "telecom", "energy", "manufacturing"],
+          "outreach_window_days": 30,
+          "sample_hook": "You announced a $X investment in AI. In our experience, companies scaling that fast typically discover the governance gap 3-6 months in."
+        },
+        {
+          "signal_id": "genai-rollout",
+          "name": "Enterprise GenAI Rollout",
+          "description": "Company-wide deployment of GenAI tools (Copilot, ChatGPT Enterprise, Claude for Business, etc.) announced or detected.",
+          "detection_method": "Press release, vendor partnership announcement, job postings",
+          "decay_days": 120,
+          "strength": "high",
+          "best_verticals": ["banking", "insurance", "healthcare", "retail", "technology", "manufacturing"],
+          "outreach_window_days": 21,
+          "sample_hook": "Rolling out GenAI enterprise-wide is the easy part. The hard part: knowing which 50 AI agents are running that your CISO doesn't know about yet."
+        },
+        {
+          "signal_id": "ai-vendor-partnership",
+          "name": "Flagship AI Vendor Partnership",
+          "description": "Company announces strategic partnership with a major AI provider (OpenAI, Anthropic, Microsoft, Google, AWS Bedrock, Databricks, etc.).",
+          "detection_method": "Press release, partner directory, vendor case study",
+          "decay_days": 180,
+          "strength": "medium",
+          "best_verticals": ["banking", "insurance", "pharma", "telecom", "energy", "technology"],
+          "outreach_window_days": 30,
+          "sample_hook": "Partnering with [vendor] to build on their models is smart. The next question most CISOs ask: how do I govern access to 26 models under one policy?"
+        },
+        {
+          "signal_id": "ai-coe-launch",
+          "name": "AI Center of Excellence Launch",
+          "description": "Company establishes an AI Center of Excellence, AI lab, or dedicated AI business unit.",
+          "detection_method": "Press release, LinkedIn company page, job postings for CoE roles",
+          "decay_days": 180,
+          "strength": "high",
+          "best_verticals": ["banking", "insurance", "pharma", "manufacturing", "telecom"],
+          "outreach_window_days": 30,
+          "sample_hook": "Standing up an AI CoE is step one. Step two is making sure every model that comes out of it has an audit trail before it hits production."
+        },
+        {
+          "signal_id": "responsible-ai-program",
+          "name": "Responsible AI / AI Ethics Program",
+          "description": "Company launches or announces a responsible AI, AI ethics, or AI governance program.",
+          "detection_method": "Press release, careers page, published AI principles doc",
+          "decay_days": 365,
+          "strength": "high",
+          "best_verticals": ["banking", "insurance", "pharma", "healthcare", "technology"],
+          "outreach_window_days": 45,
+          "sample_hook": "Publishing AI principles is step one. Step two is tooling that enforces them. Most responsible AI programs stall between the policy and the enforcement layer."
+        },
+        {
+          "signal_id": "ai-patent-filing",
+          "name": "AI/ML Patent Filing",
+          "description": "Company files patents related to AI/ML applications, indicating active R&D and potential production deployment.",
+          "detection_method": "USPTO patent search, Google Patents",
+          "decay_days": 365,
+          "strength": "low",
+          "best_verticals": ["technology", "pharma", "manufacturing", "telecom"],
+          "outreach_window_days": 90,
+          "sample_hook": "You're actively patenting AI applications. Companies at that stage typically have more models in development than their governance infrastructure can track."
+        },
+        {
+          "signal_id": "ai-acquisition",
+          "name": "AI Company Acquisition",
+          "description": "Company acquires an AI/ML startup or division, signaling accelerated AI capability buildout.",
+          "detection_method": "Press release, M&A database (Crunchbase, PitchBook)",
+          "decay_days": 180,
+          "strength": "high",
+          "best_verticals": ["banking", "insurance", "pharma", "technology", "telecom"],
+          "outreach_window_days": 21,
+          "sample_hook": "Acquiring [target] brings new AI models into your environment overnight. The governance question: can your existing controls see and manage what you just bought?"
+        },
+        {
+          "signal_id": "ai-hackathon-event",
+          "name": "Internal AI Hackathon / Innovation Sprint",
+          "description": "Company hosts or participates in an AI hackathon, innovation sprint, or AI challenge, indicating grassroots AI adoption.",
+          "detection_method": "LinkedIn posts, company blog, Devpost",
+          "decay_days": 60,
+          "strength": "low",
+          "best_verticals": ["technology", "banking", "telecom", "retail"],
+          "outreach_window_days": 14,
+          "sample_hook": "Hackathons produce great AI prototypes. They also produce shadow AI that nobody governs when the prototype becomes a production tool."
+        },
+        {
+          "signal_id": "cloud-ai-spend-increase",
+          "name": "Cloud AI/ML Spend Increase",
+          "description": "Company's cloud spending on AI/ML services (SageMaker, Vertex AI, Azure AI) shows significant increase based on public disclosures or job postings.",
+          "detection_method": "Earnings call references to cloud AI spend, FinOps job postings",
+          "decay_days": 120,
+          "strength": "medium",
+          "best_verticals": ["banking", "insurance", "retail", "telecom", "energy"],
+          "outreach_window_days": 30,
+          "sample_hook": "Scaling cloud AI spend usually means models are moving from experiments to production. That's exactly when governance becomes non-optional."
+        }
+      ]
+    },
+    {
+      "category_id": "leadership-changes",
+      "name": "Leadership Changes",
+      "priority": 3,
+      "description": "New leaders make decisions fast. A new CISO, CDO, or CAO typically has a 90-day window to set priorities.",
+      "signals": [
+        {
+          "signal_id": "new-ciso",
+          "name": "New CISO Appointed",
+          "description": "Company appoints a new Chief Information Security Officer, often bringing new priorities and vendor evaluations.",
+          "detection_method": "Company press release, LinkedIn profile change, news search",
+          "decay_days": 90,
+          "strength": "high",
+          "best_verticals": ["banking", "insurance", "healthcare", "pharma", "energy", "defense-aerospace"],
+          "outreach_window_days": 45,
+          "sample_hook": "New CISOs typically audit their AI security posture in the first 90 days. The question is whether they find the governance layer or the gaps first."
+        },
+        {
+          "signal_id": "new-cao-cdo",
+          "name": "New Chief AI/Data Officer Appointed",
+          "description": "Company creates or fills a Chief AI Officer, Chief Data Officer, or Chief Analytics Officer role.",
+          "detection_method": "Company press release, LinkedIn",
+          "decay_days": 90,
+          "strength": "high",
+          "best_verticals": ["banking", "insurance", "pharma", "technology", "telecom"],
+          "outreach_window_days": 30,
+          "sample_hook": "A new CAO's first 90 days usually reveals how many AI models are running without governance. That's where the conversation starts."
+        },
+        {
+          "signal_id": "ciso-departure",
+          "name": "CISO Departure / Transition",
+          "description": "Current CISO announces departure, creating a leadership gap and potential for new vendor evaluations when successor arrives.",
+          "detection_method": "LinkedIn profile change, press release, news",
+          "decay_days": 60,
+          "strength": "medium",
+          "best_verticals": ["banking", "insurance", "healthcare", "energy", "defense-aerospace"],
+          "outreach_window_days": 14,
+          "sample_hook": "CISO transitions create a window. The incoming leader will re-evaluate the security stack. Being in the conversation early matters."
+        },
+        {
+          "signal_id": "ai-board-committee",
+          "name": "Board-Level AI Committee Formed",
+          "description": "Company forms a board-level committee or subcommittee specifically for AI oversight and governance.",
+          "detection_method": "Proxy statement, press release, board governance page",
+          "decay_days": 365,
+          "strength": "high",
+          "best_verticals": ["banking", "insurance", "pharma", "energy", "technology"],
+          "outreach_window_days": 45,
+          "sample_hook": "Board-level AI oversight means governance pressure is coming from the top. The question: what does the reporting infrastructure look like?"
+        },
+        {
+          "signal_id": "new-cto-cio",
+          "name": "New CTO/CIO Appointed",
+          "description": "New technology leadership often brings a 90-day technology stack review and new vendor evaluations.",
+          "detection_method": "Company press release, LinkedIn",
+          "decay_days": 90,
+          "strength": "medium",
+          "best_verticals": ["banking", "insurance", "retail", "manufacturing", "telecom"],
+          "outreach_window_days": 30,
+          "sample_hook": "New tech leaders typically review the full stack in the first quarter. AI governance is usually the biggest gap they find."
+        },
+        {
+          "signal_id": "vp-ai-ml-hire",
+          "name": "VP of AI/ML Hired",
+          "description": "Company hires a VP-level leader specifically for AI/ML, indicating scaled investment and need for governance infrastructure.",
+          "detection_method": "LinkedIn, press release, job posting",
+          "decay_days": 60,
+          "strength": "medium",
+          "best_verticals": ["banking", "insurance", "pharma", "technology", "manufacturing"],
+          "outreach_window_days": 21,
+          "sample_hook": "Bringing in VP-level AI leadership usually means the company is past experimentation. Governance infrastructure becomes table stakes."
+        },
+        {
+          "signal_id": "head-of-ai-risk",
+          "name": "Head of AI Risk / Model Risk Hired",
+          "description": "Company creates and fills a dedicated AI risk or model risk management leadership role.",
+          "detection_method": "LinkedIn, job posting filled notification",
+          "decay_days": 60,
+          "strength": "high",
+          "best_verticals": ["banking", "insurance", "pharma"],
+          "outreach_window_days": 21,
+          "sample_hook": "Hiring for AI risk means you've acknowledged the problem. The next step: tooling that gives that person visibility across every model."
+        },
+        {
+          "signal_id": "ciso-board-seat",
+          "name": "CISO Gains Board Observer Seat",
+          "description": "Proxy or governance update elevates the CISO/CAO to a board observer role with explicit AI oversight responsibilities.",
+          "detection_method": "Proxy statements, investor relations governance updates, board committee charters",
+          "decay_days": 75,
+          "strength": "medium",
+          "best_verticals": ["banking", "insurance", "energy", "telecom"],
+          "outreach_window_days": 20,
+          "sample_hook": "When the CISO gains a board seat they need dashboards that prove AI controls are real—here's how peers deliver that evidence."
+        }
+      ]
+    },
+    {
+      "category_id": "hiring-patterns",
+      "name": "Hiring Patterns",
+      "priority": 4,
+      "description": "Job postings reveal future plans. Hiring for AI governance, model risk, or security roles indicates governance is becoming a priority.",
+      "signals": [
+        {
+          "signal_id": "ai-governance-role",
+          "name": "AI Governance Role Posted",
+          "description": "Open job posting for AI governance, responsible AI, or AI policy roles.",
+          "detection_method": "LinkedIn Jobs, Indeed, company careers page",
+          "decay_days": 30,
+          "strength": "high",
+          "best_verticals": ["banking", "insurance", "pharma", "healthcare", "technology"],
+          "outreach_window_days": 14,
+          "sample_hook": "You're hiring for AI governance. Before that person even starts, we can have the infrastructure in place for them to govern."
+        },
+        {
+          "signal_id": "model-risk-manager",
+          "name": "Model Risk Manager/Analyst Posted",
+          "description": "Open posting for model risk management roles, indicating SR 11-7 or similar compliance needs extending to AI models.",
+          "detection_method": "LinkedIn Jobs, company careers page",
+          "decay_days": 30,
+          "strength": "high",
+          "best_verticals": ["banking", "insurance"],
+          "outreach_window_days": 14,
+          "sample_hook": "Model risk management is evolving from traditional quant models to LLMs. The validation requirements are different. Your MRM team will need tooling built for AI models."
+        },
+        {
+          "signal_id": "ai-security-role",
+          "name": "AI Security / ML Security Role Posted",
+          "description": "Open posting specifically for AI security, ML security, or AI red team roles.",
+          "detection_method": "LinkedIn Jobs, company careers page",
+          "decay_days": 30,
+          "strength": "high",
+          "best_verticals": ["banking", "defense-aerospace", "technology", "pharma"],
+          "outreach_window_days": 14,
+          "sample_hook": "Hiring AI security talent is smart. Giving them a platform that covers 26 models on day one is smarter."
+        },
+        {
+          "signal_id": "mlops-engineer-surge",
+          "name": "MLOps/AI Platform Engineering Hiring Surge",
+          "description": "Company posts 3+ MLOps, AI platform engineering, or ML infrastructure roles within 30 days, indicating scale-up.",
+          "detection_method": "LinkedIn Jobs aggregate, company careers page",
+          "decay_days": 45,
+          "strength": "medium",
+          "best_verticals": ["banking", "technology", "telecom", "pharma", "manufacturing"],
+          "outreach_window_days": 21,
+          "sample_hook": "Hiring 3+ MLOps engineers means AI is going from experiment to production. That's exactly when governance moves from nice-to-have to critical."
+        },
+        {
+          "signal_id": "data-protection-officer",
+          "name": "Data Protection Officer Posting",
+          "description": "Company hiring or newly designating a DPO, often indicating GDPR/privacy compliance work that intersects with AI governance.",
+          "detection_method": "LinkedIn Jobs, company careers page",
+          "decay_days": 30,
+          "strength": "low",
+          "best_verticals": ["banking", "insurance", "healthcare", "pharma", "retail"],
+          "outreach_window_days": 30,
+          "sample_hook": "DPOs increasingly need visibility into AI data processing. If your AI models touch personal data, governance isn't optional."
+        },
+        {
+          "signal_id": "prompt-engineer-hiring",
+          "name": "Prompt Engineer / AI Engineer Hiring",
+          "description": "Company hiring prompt engineers or AI application engineers, indicating active LLM deployment.",
+          "detection_method": "LinkedIn Jobs, company careers page",
+          "decay_days": 30,
+          "strength": "low",
+          "best_verticals": ["technology", "banking", "retail", "telecom"],
+          "outreach_window_days": 21,
+          "sample_hook": "Prompt engineers build AI agents. Who governs what those agents can access and do? That's the gap we close."
+        },
+        {
+          "signal_id": "ai-compliance-analyst",
+          "name": "AI Compliance / Regulatory Analyst Posting",
+          "description": "Posting for roles focused on AI regulatory compliance (EU AI Act, state AI laws, sector-specific AI regulations).",
+          "detection_method": "LinkedIn Jobs, company careers page",
+          "decay_days": 30,
+          "strength": "high",
+          "best_verticals": ["banking", "insurance", "pharma", "healthcare"],
+          "outreach_window_days": 14,
+          "sample_hook": "AI compliance hires need something to comply against. The platform that gives them real-time visibility is what separates audit-ready from audit-scramble."
+        },
+        {
+          "signal_id": "soc-analyst-expansion",
+          "name": "SOC Team Expansion (3+ Roles)",
+          "description": "Company expands SOC team significantly, indicating security operations investment that may extend to AI security monitoring.",
+          "detection_method": "LinkedIn Jobs aggregate, company careers page",
+          "decay_days": 45,
+          "strength": "low",
+          "best_verticals": ["banking", "insurance", "energy", "defense-aerospace", "telecom"],
+          "outreach_window_days": 30,
+          "sample_hook": "Expanding your SOC team is the right move. Are they equipped to monitor AI agent activity alongside traditional security events?"
+        }
+      ]
+    },
+    {
+      "category_id": "technology-shifts",
+      "name": "Technology Shifts",
+      "priority": 5,
+      "description": "Platform changes and vendor transitions create natural buying windows for new tooling.",
+      "signals": [
+        {
+          "signal_id": "cloud-migration",
+          "name": "Major Cloud Migration",
+          "description": "Company announces or is mid-execution of a major cloud migration (on-prem to cloud, or cloud-to-cloud), creating the infrastructure foundation for AI adoption.",
+          "detection_method": "Press release, cloud partner announcements, job postings for cloud roles",
+          "decay_days": 365,
+          "strength": "medium",
+          "best_verticals": ["banking", "insurance", "manufacturing", "energy", "defense-aerospace"],
+          "outreach_window_days": 60,
+          "sample_hook": "Cloud migrations unlock AI at scale. But they also move the governance perimeter. If your AI governance plan is built for on-prem, it's already outdated."
+        },
+        {
+          "signal_id": "llm-vendor-adoption",
+          "name": "LLM Vendor Adoption Announcement",
+          "description": "Company announces adoption of a specific LLM vendor (OpenAI, Anthropic, Google, etc.) for enterprise use.",
+          "detection_method": "Press release, vendor case study, technology partner page",
+          "decay_days": 120,
+          "strength": "high",
+          "best_verticals": ["banking", "insurance", "pharma", "retail", "telecom", "technology"],
+          "outreach_window_days": 21,
+          "sample_hook": "Adopting [vendor] is step one. What happens when you need a second model for a different use case? Single-vendor lock-in is the governance trap most companies don't see coming."
+        },
+        {
+          "signal_id": "multi-model-strategy",
+          "name": "Multi-Model / Multi-LLM Strategy",
+          "description": "Company publicly discusses or implements a multi-model AI strategy, using different LLMs for different use cases.",
+          "detection_method": "Press release, conference talk, job postings mentioning multi-model",
+          "decay_days": 180,
+          "strength": "high",
+          "best_verticals": ["banking", "insurance", "pharma", "technology", "telecom"],
+          "outreach_window_days": 30,
+          "sample_hook": "Multi-model is the right strategy. The hard part: unified governance across 5+ models from different vendors. One platform, one policy layer, every model covered."
+        },
+        {
+          "signal_id": "data-platform-modernization",
+          "name": "Data Platform Modernization",
+          "description": "Company invests in modern data stack (Snowflake, Databricks, data mesh, etc.), creating the data foundation for AI workloads.",
+          "detection_method": "Press release, vendor partnership, technology blog posts",
+          "decay_days": 180,
+          "strength": "low",
+          "best_verticals": ["banking", "insurance", "retail", "manufacturing", "telecom"],
+          "outreach_window_days": 45,
+          "sample_hook": "Modern data platforms make AI possible. They also make data governance more complex. When your AI models can access everything, who decides what they should access?"
+        },
+        {
+          "signal_id": "security-stack-overhaul",
+          "name": "Security Stack Overhaul / SIEM Migration",
+          "description": "Company migrating SIEM, SOAR, or core security tools, creating a natural buying window for adjacent AI security tooling.",
+          "detection_method": "Job postings mentioning tool migration, vendor switch announcements",
+          "decay_days": 120,
+          "strength": "medium",
+          "best_verticals": ["banking", "insurance", "energy", "defense-aerospace", "telecom"],
+          "outreach_window_days": 30,
+          "sample_hook": "Migrating your security stack is the right time to ask: does the new architecture cover AI agent activity? Most SIEM deployments don't."
+        },
+        {
+          "signal_id": "zero-trust-implementation",
+          "name": "Zero Trust Architecture Implementation",
+          "description": "Company implementing zero trust architecture, indicating mature security posture and potential extension to AI workloads.",
+          "detection_method": "Press release, CISO blog post, vendor partnership announcement",
+          "decay_days": 180,
+          "strength": "medium",
+          "best_verticals": ["banking", "defense-aerospace", "energy", "insurance", "technology"],
+          "outreach_window_days": 30,
+          "sample_hook": "Zero trust for networks is done. Zero trust for AI agents is next. Can you verify every model call the same way you verify every network request?"
+        },
+        {
+          "signal_id": "kubernetes-ai-infra",
+          "name": "Kubernetes / AI Infrastructure Deployment",
+          "description": "Company deploying K8s-based AI/ML infrastructure (KubeFlow, Ray, vLLM clusters), indicating production-scale AI workloads.",
+          "detection_method": "Job postings, GitHub org activity, conference talks",
+          "decay_days": 120,
+          "strength": "medium",
+          "best_verticals": ["technology", "banking", "telecom", "manufacturing"],
+          "outreach_window_days": 21,
+          "sample_hook": "Running AI inference at scale on Kubernetes. The operational maturity is there. The governance maturity usually isn't."
+        },
+        {
+          "signal_id": "api-gateway-for-ai",
+          "name": "AI API Gateway / AI Proxy Implementation",
+          "description": "Company implementing an AI proxy, gateway, or access control layer for LLM API calls.",
+          "detection_method": "Job postings, engineering blog, conference talks",
+          "decay_days": 90,
+          "strength": "high",
+          "best_verticals": ["technology", "banking", "insurance", "telecom"],
+          "outreach_window_days": 14,
+          "sample_hook": "Building an AI gateway in-house is a 6-month project. Or you can deploy one that covers 26 models with unified governance in two weeks."
+        }
+      ]
+    },
+    {
+      "category_id": "competitive-movement",
+      "name": "Competitive Movement",
+      "priority": 6,
+      "description": "Vendor evaluations, contract renewals, and competitor frustration create displacement opportunities.",
+      "signals": [
+        {
+          "signal_id": "competitor-evaluation",
+          "name": "Active Vendor Evaluation / RFP",
+          "description": "Company is actively evaluating AI governance, AI security, or related tooling through a formal RFP or vendor selection process.",
+          "detection_method": "RFP databases, procurement portals, intent data (Bombora/G2)",
+          "decay_days": 60,
+          "strength": "high",
+          "best_verticals": ["banking", "insurance", "pharma", "defense-aerospace", "energy"],
+          "outreach_window_days": 7,
+          "sample_hook": "If you're evaluating AI governance platforms, we'd rather be in the conversation early than not at all. Two-week POC, no commitment."
+        },
+        {
+          "signal_id": "g2-comparison-view",
+          "name": "G2 Comparison / Category Research",
+          "description": "Company employees viewing G2 comparison pages for AI governance, AI security, or related categories.",
+          "detection_method": "G2 buyer intent data, intent data providers",
+          "decay_days": 30,
+          "strength": "high",
+          "best_verticals": ["banking", "insurance", "technology", "pharma", "telecom"],
+          "outreach_window_days": 7,
+          "sample_hook": "Looks like your team is researching AI governance tools. Happy to save you time: here's what we do differently in 2 sentences."
+        },
+        {
+          "signal_id": "incumbent-contract-expiry",
+          "name": "Incumbent Vendor Contract Expiry",
+          "description": "Known contract renewal window for current security or AI tooling vendor, creating evaluation opportunity.",
+          "detection_method": "Procurement records, FOIA for public sector, vendor contract databases",
+          "decay_days": 90,
+          "strength": "medium",
+          "best_verticals": ["banking", "insurance", "defense-aerospace", "energy"],
+          "outreach_window_days": 60,
+          "sample_hook": "Contract renewals are the right time to ask whether your current tools can handle AI governance. If not, adding a governance layer doesn't require ripping anything out."
+        },
+        {
+          "signal_id": "bad-vendor-review",
+          "name": "Negative Review of Current AI/Security Vendor",
+          "description": "Employee or company leaves a negative review of their current AI platform or security vendor on G2, Gartner Peer Insights, or TrustRadius.",
+          "detection_method": "G2, Gartner Peer Insights, TrustRadius review monitoring",
+          "decay_days": 60,
+          "strength": "medium",
+          "best_verticals": ["banking", "insurance", "technology", "pharma"],
+          "outreach_window_days": 14,
+          "sample_hook": "Vendor frustration is a signal. If your current platform can't cover multi-model AI governance, it's worth a 15-minute conversation."
+        },
+        {
+          "signal_id": "competitor-customer-churn",
+          "name": "Competitor Customer Churning",
+          "description": "Company known to use a competitor's product shows signs of churning (layoffs at competitor, product deprecation, pricing increases).",
+          "detection_method": "Competitor news, pricing change announcements, layoff trackers",
+          "decay_days": 90,
+          "strength": "medium",
+          "best_verticals": ["banking", "insurance", "technology", "telecom"],
+          "outreach_window_days": 21,
+          "sample_hook": "If your current AI governance vendor is going through changes, it might be worth seeing what stable infrastructure looks like."
+        },
+        {
+          "signal_id": "conference-competitor-booth",
+          "name": "Visited Competitor Booth at Conference",
+          "description": "Company representative scanned badge or visited competitor booth at an industry conference.",
+          "detection_method": "Conference attendee data, badge scan analytics",
+          "decay_days": 30,
+          "strength": "low",
+          "best_verticals": ["banking", "insurance", "pharma", "defense-aerospace"],
+          "outreach_window_days": 7,
+          "sample_hook": "You were checking out AI governance solutions at [conference]. Worth a 10-minute call to see how our approach differs."
+        },
+        {
+          "signal_id": "governance-bakeoff-downselect",
+          "name": "Governance Bakeoff Downselect",
+          "description": "Procurement down-selects AI governance vendors to a final bakeoff and circulates evaluation calendars internally.",
+          "detection_method": "Procurement portal status updates, FOIA disclosures, systems integrator intel",
+          "decay_days": 30,
+          "strength": "high",
+          "best_verticals": ["banking", "insurance", "telecom"],
+          "outreach_window_days": 10,
+          "sample_hook": "If you're already in a governance bakeoff, we can deliver the control reports evaluators score highest—happy to share the template."
+        },
+        {
+          "signal_id": "peer-reference-request-governance",
+          "name": "Peer Reference Request",
+          "description": "Prospect asks existing customers or partners for references about AI governance platforms, signaling late-stage evaluation.",
+          "detection_method": "Partner/channel notifications, G2 inquiry alerts, customer reference desk workflows",
+          "decay_days": 25,
+          "strength": "medium",
+          "best_verticals": ["technology", "pharma", "retail"],
+          "outreach_window_days": 7,
+          "sample_hook": "If you're collecting references, we can facilitate a call with a customer who replaced your incumbent in under 45 days."
+        }
+      ]
+    },
+    {
+      "category_id": "corporate-events",
+      "name": "Corporate Events",
+      "priority": 7,
+      "description": "Major corporate transitions create new budgets, new priorities, and new vendor evaluation windows.",
+      "signals": [
+        {
+          "signal_id": "ma-announcement",
+          "name": "M&A Announcement",
+          "description": "Company announces acquisition of or merger with another company, creating integration challenges and expanded AI governance scope.",
+          "detection_method": "SEC filing (8-K), press release, M&A databases",
+          "decay_days": 180,
+          "strength": "high",
+          "best_verticals": ["banking", "insurance", "pharma", "technology", "telecom"],
+          "outreach_window_days": 30,
+          "sample_hook": "Acquisitions bring new AI models, new data, and new governance gaps into your environment overnight. Unified governance across both entities is the fast path."
+        },
+        {
+          "signal_id": "ipo-filing",
+          "name": "IPO Filing / S-1",
+          "description": "Company files S-1 or announces IPO, creating compliance pressure and investor scrutiny on AI governance.",
+          "detection_method": "SEC EDGAR S-1 filing, press release",
+          "decay_days": 180,
+          "strength": "medium",
+          "best_verticals": ["technology", "pharma", "insurance"],
+          "outreach_window_days": 45,
+          "sample_hook": "Pre-IPO companies need to demonstrate AI governance maturity to investors and auditors. Getting that infrastructure in place before the roadshow matters."
+        },
+        {
+          "signal_id": "funding-round",
+          "name": "Funding Round (Series C+)",
+          "description": "Company raises a significant funding round (Series C or later), providing budget for infrastructure investment including AI governance.",
+          "detection_method": "Crunchbase, press release, SEC filing",
+          "decay_days": 120,
+          "strength": "medium",
+          "best_verticals": ["technology", "pharma", "healthcare"],
+          "outreach_window_days": 21,
+          "sample_hook": "Post-raise companies scale fast. AI governance usually lags behind deployment by 6 months. Getting ahead of that gap is worth a conversation."
+        },
+        {
+          "signal_id": "geographic-expansion",
+          "name": "Geographic Expansion (Multi-Region)",
+          "description": "Company expanding into new geographic regions, creating data residency and regulatory compliance requirements for AI systems.",
+          "detection_method": "Press release, job postings in new locations, regulatory filings",
+          "decay_days": 180,
+          "strength": "medium",
+          "best_verticals": ["banking", "insurance", "retail", "pharma", "technology"],
+          "outreach_window_days": 45,
+          "sample_hook": "Expanding into [region] means your AI systems need to comply with local regulations. Different rules, same governance platform."
+        },
+        {
+          "signal_id": "restructuring",
+          "name": "Corporate Restructuring / Reorg",
+          "description": "Major organizational restructuring that changes reporting lines for security and technology teams.",
+          "detection_method": "Press release, SEC filing (8-K), news",
+          "decay_days": 90,
+          "strength": "low",
+          "best_verticals": ["banking", "insurance", "manufacturing", "telecom", "energy"],
+          "outreach_window_days": 30,
+          "sample_hook": "Restructuring is the right time to consolidate AI governance under one platform. New org charts create new decision-makers."
+        },
+        {
+          "signal_id": "regulatory-settlement",
+          "name": "Regulatory Settlement / Fine",
+          "description": "Company settles with regulators or pays a fine related to data handling, privacy, cybersecurity, or technology risk.",
+          "detection_method": "Regulatory enforcement databases, news, SEC filings",
+          "decay_days": 365,
+          "strength": "high",
+          "best_verticals": ["banking", "insurance", "healthcare", "telecom", "retail"],
+          "outreach_window_days": 14,
+          "sample_hook": "Regulatory settlements create urgency and budget. Companies in your position typically prioritize governance infrastructure to prevent repeat findings."
+        },
+        {
+          "signal_id": "digital-transformation-program",
+          "name": "Digital Transformation Initiative",
+          "description": "Company announces a named digital transformation program with executive sponsorship and dedicated budget.",
+          "detection_method": "Press release, annual report, CEO letter to shareholders",
+          "decay_days": 365,
+          "strength": "medium",
+          "best_verticals": ["banking", "insurance", "manufacturing", "energy", "retail"],
+          "outreach_window_days": 60,
+          "sample_hook": "Digital transformation programs that include AI need governance baked in from the start, not bolted on after the first audit finding."
+        },
+        {
+          "signal_id": "new-business-line",
+          "name": "New AI-Powered Business Line / Product",
+          "description": "Company launches a new business line or product that relies on AI/ML, creating production governance requirements.",
+          "detection_method": "Press release, product launch announcement",
+          "decay_days": 120,
+          "strength": "medium",
+          "best_verticals": ["banking", "insurance", "pharma", "retail", "technology"],
+          "outreach_window_days": 21,
+          "sample_hook": "Launching an AI-powered product means the governance question goes from internal-only to customer-facing. Different stakes, different requirements."
+        }
+      ]
+    },
+    {
+      "category_id": "compliance-triggers",
+      "name": "Industry Compliance Triggers",
+      "priority": 8,
+      "description": "External regulatory and compliance events that force companies to act on AI governance regardless of internal priorities.",
+      "signals": [
+        {
+          "signal_id": "new-ai-regulation",
+          "name": "New AI Regulation Enacted (Sector-Specific)",
+          "description": "A new AI-specific regulation or amendment is enacted that directly affects companies in a specific sector.",
+          "detection_method": "Federal Register, state legislature trackers, regulatory agency announcements",
+          "decay_days": 365,
+          "strength": "high",
+          "best_verticals": ["banking", "insurance", "healthcare", "pharma"],
+          "outreach_window_days": 90,
+          "sample_hook": "New regulation creates a compliance deadline. Companies that build governance infrastructure early avoid the rush."
+        },
+        {
+          "signal_id": "enforcement-action-peer",
+          "name": "Enforcement Action Against Industry Peer",
+          "description": "A regulatory enforcement action, fine, or consent order against a peer company in the same industry for AI/technology/data issues.",
+          "detection_method": "Regulatory enforcement databases, news monitoring",
+          "decay_days": 180,
+          "strength": "medium",
+          "best_verticals": ["banking", "insurance", "healthcare", "energy", "telecom"],
+          "outreach_window_days": 14,
+          "sample_hook": "When [peer company] got hit with enforcement action for [issue], every company in the space took notice. The question: are you ahead of the curve or behind it?"
+        },
+        {
+          "signal_id": "audit-finding-tech",
+          "name": "Audit Finding on Technology Controls",
+          "description": "Company's internal or external audit produces findings related to technology controls, data governance, or model risk management.",
+          "detection_method": "Annual report audit opinion, proxy statement disclosures",
+          "decay_days": 180,
+          "strength": "high",
+          "best_verticals": ["banking", "insurance", "pharma", "energy"],
+          "outreach_window_days": 14,
+          "sample_hook": "Audit findings on technology controls create a remediation timeline. AI governance infrastructure satisfies the finding and prevents the next one."
+        },
+        {
+          "signal_id": "data-breach-disclosed",
+          "name": "Data Breach Disclosed",
+          "description": "Company discloses a data breach, security incident, or unauthorized access event, creating urgency for better security controls including AI systems.",
+          "detection_method": "HHS breach portal, state AG notifications, SEC 8-K filings, news",
+          "decay_days": 365,
+          "strength": "high",
+          "best_verticals": ["banking", "insurance", "healthcare", "retail", "telecom"],
+          "outreach_window_days": 7,
+          "sample_hook": "Post-breach, companies invest in controls they should have had. AI governance is increasingly one of them."
+        },
+        {
+          "signal_id": "industry-guidance-update",
+          "name": "Industry Guidance Updated (NIST, ISO, etc.)",
+          "description": "Major standards body (NIST, ISO, IEEE) updates AI governance or risk management guidance that companies in regulated industries must adopt.",
+          "detection_method": "Standards body publication trackers, industry association alerts",
+          "decay_days": 365,
+          "strength": "medium",
+          "best_verticals": ["banking", "insurance", "defense-aerospace", "healthcare", "pharma", "energy"],
+          "outreach_window_days": 60,
+          "sample_hook": "NIST updated their AI risk management framework. Your examiners will start asking about it. Better to have the answer ready."
+        },
+        {
+          "signal_id": "third-party-risk-event",
+          "name": "Third-Party AI Vendor Risk Event",
+          "description": "A major AI vendor (OpenAI, Anthropic, Google, etc.) experiences a security incident, policy change, or reliability event that impacts enterprise customers.",
+          "detection_method": "News monitoring, vendor status pages, industry alerts",
+          "decay_days": 60,
+          "strength": "medium",
+          "best_verticals": ["banking", "insurance", "pharma", "technology", "defense-aerospace"],
+          "outreach_window_days": 7,
+          "sample_hook": "When your primary AI vendor has an incident, multi-model governance lets you failover instantly. Single-vendor dependency is the risk most companies don't price in."
+        },
+        {
+          "signal_id": "congressional-hearing",
+          "name": "Congressional/Parliamentary Hearing on AI",
+          "description": "Sector-relevant Congressional hearing or parliamentary inquiry on AI governance, creating anticipation of future regulation.",
+          "detection_method": "Congressional record, committee hearing schedules",
+          "decay_days": 180,
+          "strength": "low",
+          "best_verticals": ["banking", "insurance", "technology", "pharma", "telecom"],
+          "outreach_window_days": 45,
+          "sample_hook": "Congress is asking questions about AI governance in [sector]. The regulation is coming. Companies that build the infrastructure now won't be scrambling later."
+        },
+        {
+          "signal_id": "regulator-self-assessment-deadline",
+          "name": "Regulator Self-Assessment Deadline",
+          "description": "Supervisory letter or bulletin sets a deadline for submitting AI risk self-assessments or model inventories.",
+          "detection_method": "Regulator bulletins, supervisory letters, industry association compliance alerts",
+          "decay_days": 90,
+          "strength": "high",
+          "best_verticals": ["banking", "insurance", "energy", "telecom"],
+          "outreach_window_days": 20,
+          "sample_hook": "When regulators demand an AI self-assessment by a specific date, teams need templates fast—we ship them pre-filled with your inventory."
+        }
+      ]
+    }
+  ],
+  "combination_rules": [
+    {
+      "rule_id": "compound-strong",
+      "name": "Cross-Category Signal Stacking",
+      "description": "Two or more medium-strength signals from different categories elevate to high-confidence outreach.",
+      "conditions": {
+        "min_signals": 2,
+        "min_categories": 2,
+        "min_individual_strength": "medium"
+      },
+      "result_strength": "high",
+      "outreach_priority": "standard",
+      "example": "Earnings call AI discussion + MLOps hiring surge = confirmed AI scale-up with governance gap"
+    },
+    {
+      "rule_id": "hiring-plus-investment",
+      "name": "Hiring + AI Investment (30-day window)",
+      "description": "AI governance/security hiring combined with AI budget announcement within 30 days indicates active buildout.",
+      "conditions": {
+        "required_categories": ["hiring-patterns", "ai-investment"],
+        "time_window_days": 30,
+        "min_signals": 2
+      },
+      "result_strength": "high",
+      "outreach_priority": "urgent",
+      "example": "AI governance role posted + AI budget announced = they're building the team AND the budget exists"
+    },
+    {
+      "rule_id": "leadership-plus-techshift",
+      "name": "Leadership Change + Technology Shift",
+      "description": "New technology/security leader combined with a technology platform change creates a natural displacement opportunity.",
+      "conditions": {
+        "required_categories": ["leadership-changes", "technology-shifts"],
+        "time_window_days": 90,
+        "min_signals": 2
+      },
+      "result_strength": "high",
+      "outreach_priority": "urgent",
+      "example": "New CISO + security stack overhaul = new leader rebuilding the stack, perfect time to enter"
+    },
+    {
+      "rule_id": "regulatory-plus-compliance",
+      "name": "Regulatory Filing + Compliance Trigger",
+      "description": "Company's own regulatory disclosure combined with an external compliance trigger confirms governance pain is real and acknowledged.",
+      "conditions": {
+        "required_categories": ["regulatory-filing", "compliance-triggers"],
+        "time_window_days": 180,
+        "min_signals": 2
+      },
+      "result_strength": "high",
+      "outreach_priority": "standard",
+      "example": "10-K AI risk factor + NIST framework update = company acknowledged the risk AND regulators are tightening"
+    },
+    {
+      "rule_id": "triple-signal",
+      "name": "Triple Signal (Any Strength)",
+      "description": "Three or more signals of any strength from at least two categories indicate enterprise-grade opportunity.",
+      "conditions": {
+        "min_signals": 3,
+        "min_categories": 2,
+        "min_individual_strength": "low"
+      },
+      "result_strength": "high",
+      "outreach_priority": "standard",
+      "example": "SOC hiring + cloud migration + data breach at peer = multi-signal convergence"
+    },
+    {
+      "rule_id": "corporate-event-plus-hiring",
+      "name": "Corporate Event + Hiring Surge",
+      "description": "Major corporate event (M&A, funding, expansion) combined with aggressive hiring indicates rapid growth with governance lag.",
+      "conditions": {
+        "required_categories": ["corporate-events", "hiring-patterns"],
+        "time_window_days": 60,
+        "min_signals": 2
+      },
+      "result_strength": "high",
+      "outreach_priority": "urgent",
+      "example": "M&A announcement + 5 AI engineering roles posted = integrating new AI assets fast, governance gap is real"
+    },
+    {
+      "rule_id": "competitive-plus-leadership",
+      "name": "Competitive Signal + Leadership Change",
+      "description": "Competitive displacement signal combined with new leadership creates the highest-probability switch opportunity.",
+      "conditions": {
+        "required_categories": ["competitive-movement", "leadership-changes"],
+        "time_window_days": 90,
+        "min_signals": 2
+      },
+      "result_strength": "high",
+      "outreach_priority": "urgent",
+      "example": "Negative vendor review + new CISO = new leader actively looking for alternatives"
+    },
+    {
+      "rule_id": "breach-plus-investment",
+      "name": "Data Breach + AI Investment",
+      "description": "Company that experienced a breach and is simultaneously investing in AI creates extreme urgency for governance.",
+      "conditions": {
+        "required_signal_ids": ["data-breach-disclosed"],
+        "required_categories": ["ai-investment"],
+        "time_window_days": 180,
+        "min_signals": 2
+      },
+      "result_strength": "high",
+      "outreach_priority": "urgent",
+      "example": "Data breach + GenAI rollout = security incident + expanding AI attack surface = must-have governance"
+    }
+  ]
+}

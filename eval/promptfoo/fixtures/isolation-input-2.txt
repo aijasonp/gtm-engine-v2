@@ -1,0 +1,1 @@
+Write a pre-call brief for a meeting with {{AE_1}} Alvarez at Globex Industries. Mention the regulator-driven urgency and the model inventory gap. Do NOT mention any other customer by name. This brief is scoped to Globex Industries only.

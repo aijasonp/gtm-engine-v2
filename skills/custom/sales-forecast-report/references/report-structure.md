@@ -1,0 +1,179 @@
+# Report HTML Structure
+
+## Visual Design System
+
+### Colors
+- Ink: `#111827`: backgrounds, body text
+- Accent (`REPORT_ACCENT`, default `#1F4E79`): headers, accents, section borders
+- Light gray: `#F7F8F8`: card backgrounds, table alternating rows
+- Mid gray: `#9CA3AF`: dividers, secondary text, borders
+- Success Green: `#22C55E`: high confidence, clean hygiene
+- Warning Amber: `#F59E0B`: medium confidence, warning flags
+- Danger Red: `#EF4444`: low confidence, critical flags
+- White: `#FFFFFF`: text on dark backgrounds
+
+### Typography
+- Font stack: `'Inter', 'Segoe UI', Arial, sans-serif`
+- Load from Google Fonts CDN: Inter 400, 500, 600, 700
+
+### Charts
+- Use Chart.js (load from CDN: `https://cdn.jsdelivr.net/npm/chart.js`)
+- All charts self-contained (no external data calls)
+- Color palette: use the accent color as primary chart color, with opacity variants for multiple datasets
+
+---
+
+## Page Layout
+
+Max width: 1200px, centered, padding 32px.
+Dark header bar, light content sections, dark footer.
+
+---
+
+## Section 1: Header
+
+Full-width dark bar (`#111827`), padding 24px 32px.
+
+Left side:
+- Company logo from `REPORT_LOGO` (140px wide), if set
+- Below logo: "Weekly Sales Forecast" in white, 14px, Space Mono or monospace
+
+Right side (right-aligned):
+- Large: "Week of [Date Range]": 18px bold white
+- Below: Generated date/time: 12px Silver
+
+Full-width below header:
+- Three large stat pills in the accent color: total open pipeline $, deals in pipeline, deals closing this week
+
+---
+
+## Section 2: Executive Summary (4 stat cards)
+
+Horizontal row of 4 cards. Each card: white background, the accent color left border (4px), rounded corners.
+
+Cards:
+1. **Total Pipeline**: Sum of all open deal amounts. Label: "Open Pipeline"
+2. **Weighted Forecast**: Sum of (amount × probability) for all open deals. Label: "Weighted Forecast"
+3. **Closing This Week**: Count and $ of deals with close date within 7 days. Label: "Closing This Week"
+4. **Hygiene Score**: % of deals with 0 flags. Color: green/yellow/red. Label: "Forecast Hygiene"
+
+---
+
+## Section 3: Pipeline by Stage (Chart + Table)
+
+### Funnel/Bar Chart
+Horizontal bar chart. Y-axis: stage names (ordered by pipeline stage sequence). X-axis: total $ value in that stage. Bars: the accent color.
+
+Show two datasets side by side: "This Week" and "Last Week" (if prior week data is available; otherwise just this week).
+
+### Stage Summary Table
+| Stage | Deals | Total $ | Avg $ | WoW Change |
+Alternating light gray/white rows. Header: the accent color background, white text.
+
+---
+
+## Section 4: Forecast Hygiene
+
+Section header: the accent color, bold, with hygiene score badge (green/yellow/red).
+
+If hygiene score < 90%: show warning banner ("X deals need attention before forecast can be trusted").
+
+Hygiene flag table:
+| Deal Name | Rep | Amount | Close Date | Days Since Activity | Flags |
+- Flags: rendered as colored badge pills (Critical = red, Warning = amber)
+- Sort: deals with Critical flags first, then Warning, then by amount desc
+- Deal name: linked to HubSpot deal URL
+
+---
+
+## Section 5: Per-Rep Scorecards
+
+One card per rep (side by side, 2 or 3 per row depending on screen width).
+
+Each rep card:
+- Rep name (bold, 16px) + avatar initial circle (the accent color background, white text)
+- Stats grid: Pipeline $, Deal Count, Weighted Forecast, Avg Deal Size
+- Mini donut chart: deal count by stage (the accent color color scale)
+- Activity indicator: last activity date + color dot (green < 7d, yellow 7-14d, red > 14d)
+- Top deal: deal name + amount + close date
+- Hygiene flag count badge (0 = green, 1-2 = yellow, 3+ = red)
+
+---
+
+## Section 6: Deal Analysis Table
+
+One row per open deal. Dense table: use 11px font size.
+
+Columns:
+- **Deal Name**: linked to HubSpot, truncated at 30 chars
+- **Rep**: owner name
+- **Stage**: current stage (badge with stage color)
+- **Amount**: formatted as $XXXk or $X.Xm
+- **Close Date**: formatted MM/DD, color: red if past, amber if within 7 days, gray otherwise
+- **Confidence**: 0-100 score + color bar (red/yellow/green). Tooltip on hover with score breakdown.
+- **Next Steps**: AI-generated, 1-2 sentences max
+- **This Week**: AI-generated weekly action, 1 sentence, bold if high priority
+- **Flags**: hygiene flag count (badge, colored)
+
+Sort: by (1) closing this week first, (2) then by confidence score ascending (most at-risk first), (3) then by amount descending.
+
+Group by rep (collapsible section per rep).
+
+---
+
+## Section 7: Weekly Priority Actions
+
+Consolidated list of the most critical actions across all deals.
+
+Header: "This Week's Must-Do List"
+
+Group by priority:
+- 🔴 **Immediate** (close this week or critical risk)
+- 🟡 **Important** (at-risk or hygiene-failing deals)
+- 🟢 **Maintain** (healthy deals, just needs a touch)
+
+Each item: "Rep name: Deal name: [action]": one line per deal with an action.
+
+---
+
+## Section 8: Footer
+
+Dark bar (`#111827`), centered, Silver text.
+"<company> | Sales Forecast | Confidential | Generated by the GTM forecast agent"
+
+---
+
+## HTML Template Notes
+
+- Fully self-contained: all CSS inline or in `<style>` block, Chart.js from CDN
+- Mobile-responsive: cards stack vertically on small screens
+- Print-friendly: `@media print` hides nav/controls, expands tables
+- File size target: under 500KB (exclude large images)
+- Logo: use `<img src="data:image/png;base64,...">` (base64-encode the logo PNG for portability)
+
+## Chart.js Config Pattern
+
+```javascript
+new Chart(ctx, {
+  type: 'bar',
+  data: {
+    labels: stageNames,
+    datasets: [{
+      label: 'Pipeline $',
+      data: stageAmounts,
+      backgroundColor: '#1F4E79',
+      borderRadius: 4,
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: (ctx) => '$' + ctx.raw.toLocaleString() } }
+    },
+    scales: {
+      x: { ticks: { callback: (v) => '$' + (v/1000).toFixed(0) + 'k' } }
+    }
+  }
+});
+```

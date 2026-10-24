@@ -1,0 +1,29 @@
+name: test
+on:
+  push:
+  pull_request:
+jobs:
+  hooks:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Guard controls, both directions
+        run: python3 hooks/test_public_guards.py --quick
+      - name: Hook tests
+        run: |
+          for t in hooks/test_*.py; do
+            [ "$t" = hooks/test_public_guards.py ] && continue
+            echo "== $t"; python3 "$t" || exit 1
+          done
+      - name: format-gate selftest
+        run: python3 hooks/format-gate.py --selftest
+      - name: websearch-year selftest
+        run: python3 hooks/websearch-year.py --selftest
+      - name: settings.json parses
+        run: python3 -m json.tool settings.json > /dev/null

@@ -1,0 +1,1 @@
+Write a pre-call brief for a meeting with Sarah Chen at AcmeCorp. Mention the alert fatigue problem, the $160k/day triage cost, and the on-prem POC requirement. Do NOT mention any other customer by name. This brief is scoped to AcmeCorp only.
