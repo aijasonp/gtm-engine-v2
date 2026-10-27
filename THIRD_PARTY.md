@@ -19,3 +19,16 @@
 | Remaining folders | Origin not recorded | No |
 
 The 630-skill open-source sales library is not stored here. Install it with `scripts/install-open-source-skills.sh`.
+
+## Code adapted from other repos
+
+| Path | Upstream | License |
+| --- | --- | --- |
+| `core/scripts/reachability-gate/reachability.py`, `moltsets_client.py` | github.com/shawnla90/gtm-coding-agent (`starters/moltsets-reachability/lib`) | MIT, Copyright (c) 2026 Shawn Villaron |
+| `core/lib/sheet_engine.py` | github.com/shawnla90/gtm-coding-agent (`lib/sheet_engine.py`), modified | MIT, Copyright (c) 2026 Shawn Villaron |
+| `core/scripts/competitor-engagers/engagers.py` | adapted from `starters/nexus-intel/scripts` in the same repo | MIT, Copyright (c) 2026 Shawn Villaron |
+| `core/scripts/reddit-signals/reddit_signals.py` | adapted from `starters/reddit-buyer-signals` in the same repo | MIT, Copyright (c) 2026 Shawn Villaron |
+| `core/scripts/phone-compliance/phone_gate.py` | DNC hash format and route order from `examples/scripts/prospeo_enrich.py` in the same repo | MIT, Copyright (c) 2026 Shawn Villaron |
+
+MIT terms: keep the copyright notice and license text with any substantial copy. The full license text is in `licenses/gtm-coding-agent-MIT.txt`.
+

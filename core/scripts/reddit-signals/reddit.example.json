@@ -1,0 +1,25 @@
+{
+  "_comment": "Copy to reddit.json (gitignored) and fill in for the market the engine runs for. brands = vendors buyers compare; category = nouns that prove a thread is on-topic; topics = keyword buckets for content and angle clustering.",
+  "brands": ["{{COMPETITOR_A}}", "{{COMPETITOR_B}}", "{{PRODUCT}}"],
+  "brand_aliases": {"comp a": "{{COMPETITOR_A}}"},
+  "category": [
+    "ai governance", "ai security", "llm security", "genai security", "ai risk", "model risk",
+    "prompt injection", "shadow ai", "ai policy", "data loss prevention", "dlp", "ai firewall",
+    "ai gateway", "llm gateway", "agent security", "ai compliance"
+  ],
+  "topics": {
+    "shadow-ai": ["shadow ai", "unsanctioned", "employees using chatgpt", "blocked chatgpt"],
+    "data-leakage": ["data leak", "dlp", "sensitive data", "pii", "exfiltrat"],
+    "prompt-injection": ["prompt injection", "jailbreak", "injection attack"],
+    "agent-governance": ["agent", "agentic", "autonomous", "tool calls", "mcp"],
+    "compliance": ["eu ai act", "soc 2", "iso 42001", "nist ai rmf", "audit"],
+    "pricing": ["pricing", "per seat", "too expensive", "license cost"],
+    "switching": ["switching from", "migrate", "alternative to", "replace", "moving off"]
+  },
+  "apify": {
+    "_comment": "Optional. Any Reddit actor whose dataset has title/body/permalink/createdAt fields works. Check the actor's input schema before the first run.",
+    "actor": "trudax/reddit-scraper-lite",
+    "input": {"searches": ["ai governance tool", "llm security vendor", "shadow ai"], "sort": "new", "maxItems": 200},
+    "timeout": 300
+  }
+}

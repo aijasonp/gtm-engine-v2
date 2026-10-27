@@ -168,16 +168,13 @@ for x in runs:
 json.dump(results, open(os.path.join(HERE, "clay_results.json"), "w"), indent=2)
 
 # ---- merge into rows ----
-TOLLFREE = ("800", "888", "877", "866", "855", "844", "833")
-def gate(p):
-    d = "".join(ch for ch in p if ch.isdigit())
-    if len(d) == 11 and d.startswith("1"):
-        d = d[1:]
-    if len(d) != 10:
-        return False
-    if d[:3] in TOLLFREE:
-        return False
-    return True
+# Phone quality gates (toll-free, main line, line type, do-not-call) live in phone-compliance/phone_gate.py.
+# DNC hash files: PHONE_DNC_FILES=/path/a.txt:/path/b.txt
+sys.path.insert(0, os.path.join(HERE, "..", "phone-compliance"))
+from phone_gate import CLEARED, PENDING, check_number, load_dnc  # noqa: E402
+DNC = load_dnc([p for p in os.environ.get("PHONE_DNC_FILES", "").split(":") if p])
+if DNC is None:
+    print("warning: PHONE_DNC_FILES not set; phones marked pending_checks, do not dial until DNC runs", flush=True)
 
 for r in rows:
     if r["ms_status"] == "ok":
@@ -195,8 +192,10 @@ for r in rows:
     else:
         r["final_email"] = ""
         r["final_email_source"] = "clay_miss_same_or_none"
-    if hit["phone"] and gate(hit["phone"]):
-        r["clay_phone"] = hit["phone"]
+    route, reason, e164 = check_number(hit["phone"] or "", email=r.get("final_email", ""), dnc=DNC)
+    r["clay_phone_route"], r["clay_phone_reason"] = route, reason
+    if route in (CLEARED, PENDING):
+        r["clay_phone"] = e164
         r["clay_phone_provider"] = hit["phone_provider"]
     else:
         r["clay_phone"] = ""

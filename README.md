@@ -19,14 +19,18 @@ All company, customer, prospect and colleague data has been removed. Placeholder
 core/
   brain/          agent rules, persona, runbook, tool notes
   references/     operating specs: outbound pipeline, scoring engines, copy rules, forecast skills, feedback loop
-  gtm-vault/      66-signal taxonomy with stacking and decay rules; schemas for angles, objections, language, feedback
+  gtm-vault/      72-signal taxonomy (9 categories, incl. community intent) with stacking and decay rules; schemas for angles, objections, language, feedback
+  lib/            shared modules: signal decay scoring, Apify REST client, color-coded Google Sheet builder
   scripts/        outbound engine (scoring client, forecast alerts, rep feedback PRs), Clay and Floqer tooling,
                   enrichment and bounce re-enrichment, CRM cleanup, stage revision, forecast pulls, video frame audit;
-                  outbound-engine scoring is product-agnostic (see product_profile.example.yaml)
+                  outbound-engine scoring is product-agnostic (see product_profile.example.yaml);
+                  reachability-gate (A-F email grade + route before Smartlead), phone-compliance (DNC gate
+                  before the dialer), competitor-engagers and reddit-signals (community-intent signal sources)
 skills/
   custom/         14 GTM skills written for this engine
   third-party/    open-source and community skills used alongside them (see THIRD_PARTY.md)
 eval/             promptfoo regression suite, monthly eval, prompt optimization
+tests/            offline unit tests (no network): python3 -m unittest discover -s tests
 dashboard/        Next.js GTM dashboard (synthetic sample data in src/data)
 scripts/          setup helpers
 ```
