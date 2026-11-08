@@ -1,6 +1,6 @@
 {
-  "version": "1.0",
-  "last_updated": "2026-06-22",
+  "version": "1.1",
+  "last_updated": "2026-10-27",
   "description": "Comprehensive signal taxonomy for {{COMPANY}} outbound engine. Inspired by ColdIQ 137-trigger framework + gtm-starter-kit signal decay patterns.",
   "categories": [
     {
@@ -792,6 +792,80 @@
           "sample_hook": "When regulators demand an AI self-assessment by a specific date, teams need templates fast—we ship them pre-filled with your inventory."
         }
       ]
+    },
+    {
+      "category_id": "community-intent",
+      "name": "Community & Social Intent",
+      "priority": 9,
+      "description": "Person-level public intent: engaging with competitor content on LinkedIn, or asking buyer questions on Reddit. Strongest when stacked with an account-level signal from categories 1-8.",
+      "signals": [
+        {
+          "signal_id": "competitor-post-engagement",
+          "name": "Commented on a Competitor Post",
+          "description": "Person commented on a tracked competitor's LinkedIn company or exec post.",
+          "detection_method": "core/scripts/competitor-engagers (Apify harvestapi post + comment actors)",
+          "decay_days": 30,
+          "strength": "medium",
+          "best_verticals": [],
+          "outreach_window_days": 14,
+          "sample_hook": "Saw you weighing in on the conversation about how teams are handling this. Curious what you're running today."
+        },
+        {
+          "signal_id": "competitor-multi-engagement",
+          "name": "Engaged With Two or More Competitors",
+          "description": "Same person commented on posts from two or more tracked competitors inside the decay window. Reads as active category research.",
+          "detection_method": "core/scripts/competitor-engagers score step",
+          "decay_days": 30,
+          "strength": "high",
+          "best_verticals": [],
+          "outreach_window_days": 10,
+          "sample_hook": "Looks like you've been comparing a few approaches lately. Happy to share what we see separating the ones that stick."
+        },
+        {
+          "signal_id": "reddit-vendor-comparison",
+          "name": "Reddit Vendor Comparison",
+          "description": "Thread or comment comparing named vendors in the category (X vs Y).",
+          "detection_method": "core/scripts/reddit-signals classify = comparison",
+          "decay_days": 45,
+          "strength": "high",
+          "best_verticals": [],
+          "outreach_window_days": 21,
+          "sample_hook": "Teams comparing these two usually get stuck on the same question. Here's how we'd answer it."
+        },
+        {
+          "signal_id": "reddit-recommendation-ask",
+          "name": "Reddit Recommendation Ask",
+          "description": "Buyer asking which tool to pick, or for an alternative to a named vendor.",
+          "detection_method": "core/scripts/reddit-signals classify = recommendation",
+          "decay_days": 30,
+          "strength": "high",
+          "best_verticals": [],
+          "outreach_window_days": 14,
+          "sample_hook": "If you're still shortlisting, here's the checklist buyers in your spot tell us they wish they had."
+        },
+        {
+          "signal_id": "reddit-vendor-pain",
+          "name": "Reddit Vendor Pain",
+          "description": "Complaint about price, complexity or limits of a named vendor or the category.",
+          "detection_method": "core/scripts/reddit-signals classify = pain",
+          "decay_days": 60,
+          "strength": "medium",
+          "best_verticals": [],
+          "outreach_window_days": 30,
+          "sample_hook": "That pricing jump is the most common reason teams start looking. Here's what switching actually took for one of them."
+        },
+        {
+          "signal_id": "reddit-category-question",
+          "name": "Reddit Category Question",
+          "description": "General question about the category with no vendor named. Content signal more than an outreach trigger.",
+          "detection_method": "core/scripts/reddit-signals classify = question",
+          "decay_days": 30,
+          "strength": "low",
+          "best_verticals": [],
+          "outreach_window_days": 14,
+          "sample_hook": "Use as content and language input; rarely a direct outreach trigger."
+        }
+      ]
     }
   ],
   "combination_rules": [
@@ -899,6 +973,20 @@
       "result_strength": "high",
       "outreach_priority": "urgent",
       "example": "Data breach + GenAI rollout = security incident + expanding AI attack surface = must-have governance"
+    },
+    {
+      "rule_id": "community-plus-account-signal",
+      "name": "Person Intent + Account Signal",
+      "description": "A community-intent signal on a person at an account that already carries a medium or high signal from categories 1-8.",
+      "conditions": {
+        "required_categories": ["community-intent"],
+        "min_signals": 2,
+        "min_categories": 2,
+        "min_individual_strength": "medium"
+      },
+      "result_strength": "high",
+      "outreach_priority": "priority",
+      "example": "VP Security comments on two competitor posts the same month their company files a 10-K AI risk factor"
     }
   ]
 }

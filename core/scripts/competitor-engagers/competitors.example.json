@@ -1,0 +1,30 @@
+{
+  "_comment": "Copy to competitors.json (gitignored) and fill in. Keywords are matched as whole words against a commenter's title and company to drop competitor employees and your own team.",
+  "own_company_keywords": ["{{COMPANY}}"],
+  "competitors": [
+    {
+      "name": "{{COMPETITOR_A}}",
+      "keywords": ["competitor a"],
+      "linkedin": [
+        "https://www.linkedin.com/company/competitor-a/",
+        "https://www.linkedin.com/in/competitor-a-ceo/"
+      ]
+    },
+    {
+      "name": "{{COMPETITOR_B}}",
+      "keywords": ["competitor b"],
+      "linkedin": ["https://www.linkedin.com/company/competitor-b/"]
+    }
+  ],
+  "persona_tiers": {
+    "5": ["ciso", "chief information security officer", "chief security officer", "chief ai officer", "chief data officer"],
+    "4": ["vp security", "vp of security", "head of security", "head of ai", "vp engineering", "vp of engineering", "cio", "cto"],
+    "3": ["director", "head of", "principal", "security architect"],
+    "2": ["manager", "lead", "senior"]
+  },
+  "exclude_title_keywords": ["recruiter", "talent acquisition", "student", "intern", "account executive", "sdr", "bdr", "sales development representative", "partner manager", "investor", "venture"],
+  "min_persona_tier": 3,
+  "lookback_days": 30,
+  "max_posts_per_source": 10,
+  "max_comments_per_post": 50
+}

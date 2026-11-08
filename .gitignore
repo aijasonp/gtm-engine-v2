@@ -33,3 +33,13 @@ sheet_raw.json
 *.bak
 *.bak-*
 .DS_Store
+# local configs and data for signal sources and gates
+core/scripts/competitor-engagers/competitors.json
+core/scripts/reddit-signals/reddit.json
+reachability-out/
+phones_checked.csv
+cleared_to_call.csv
+*.db
+*.db-wal
+*.db-shm
+dnc*.txt
